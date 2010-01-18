@@ -36,7 +36,44 @@ module TOXTM2
 
   end
 
+  def self.to_xtm2_ref(ref)
+    x = REXML::Element.new 'topicRef'
+    x.add_attribute('href', "##{ref}")
+
+    return x
+  end
+
+  def self.topic_as_type(id, topic)
+    x = REXML::Element.new('topic')
+    x.add_attribute('id', id)
+    x << TOXTM2.locator(topic.to_s, "subjectIdentifier")
+
+    return x
+  end
+
+end
+
+class ActionController::Base
+  include TOXTM2
+  
+  def array_to_xtm2(array)
+    doc = REXML::Document.new
+    doc << REXML::XMLDecl.new
+
+    x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
+
+    array.each() { |topic| x << TOXTM2::topic_as_type(topic.to_s, topic.absolute_identifier) }
+
+    return doc
+  end
+end
+
+class ActiveRecord::Base
+  include TOXTM2
+  
   def to_xtm2
+    require 'set'
+    
     puts "To_xtm2 aufgerufen fuer: " + absolute_identifier
     doc = REXML::Document.new
     doc << REXML::XMLDecl.new
@@ -47,18 +84,17 @@ module TOXTM2
     x << REXML::Comment.new("Associations count: #{associations.size}")
 
     #Create types
-    x << topic_as_type(self.class.to_s, psi)
+    x << TOXTM2::topic_as_type(self.class.to_s, psi)
+    
+    types = names.to_set
+    types << occurrences
+    types << associations
 
-    names.each do |n|
-      x << topic_as_type(n.to_s, psi+n.to_s) unless self.send("#{n}").blank?
-    end
-    occurrences.each do |o|
-      x << topic_as_type(o.to_s, psi+o.to_s) unless self.send("#{o}").blank?
-    end
-    associations.each do |as|
-      x << topic_as_type(as.to_s, psi+as.to_s) unless self.send("#{as}").blank?
+    names.each do |types|
+      x << TOXTM2::topic_as_type(types.to_s, psi+types.to_s) unless self.send("#{types}").blank?
     end
 
+    #Create Intance
     x << topic_to_xtm2
 
     return doc
@@ -76,16 +112,10 @@ module TOXTM2
   self.occurrences ||=[]
   self.associations ||=[]
 
+  protected
+
   def psi
     return absolute_identifier.sub(self.identifier, "")
-  end
-
-  def topic_as_type(id, topic)
-    x = REXML::Element.new('topic')
-    x.add_attribute('id', id)
-    x << TOXTM2.locator(topic.to_s, "subjectIdentifier")
-
-    return x
   end
 
   # returns the XTM 2.0 representation of this topic as an REXML::Element
@@ -166,7 +196,6 @@ module TOXTM2
   end
 
 end
-
 
 # Way to go in Rails 3
 #class CTMResponder < ActionController::Responder
