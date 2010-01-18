@@ -1,48 +1,38 @@
 puts "Core Extensions geladen"
 
-class ActiveRecord::Base
-  module TOXTM2
-    require 'rexml/document'
+module TOXTM2
+  require 'rexml/document'
 
-    def self.type(type)
-      res = REXML::Element.new('type')
-      res << TOXTM2.to_xtm2_ref(type)
-      return res
-    end
+  def self.type(type)
+    res = REXML::Element.new('type')
+    res << TOXTM2.to_xtm2_ref(type)
+    return res
+  end
 
-    def self.instanceOf(topic)
-      res = REXML::Element.new('instanceOf')
-      res << TOXTM2.to_xtm2_ref(topic)
-      return res
-    end
+  def self.instanceOf(topic)
+    res = REXML::Element.new('instanceOf')
+    res << TOXTM2.to_xtm2_ref(topic)
+    return res
+  end
 
-    def self.locator(loc, tagname = "itemIdentity")
-      x = REXML::Element.new(tagname)
-      x.add_attribute('href',loc.to_s)
+  def self.locator(loc, tagname = "itemIdentity")
+    x = REXML::Element.new(tagname)
+    x.add_attribute('href',loc.to_s)
 
-      return x
-    end
+    return x
+  end
 
-    def self.value(value)
-      res = REXML::Element.new 'resourceData'
-      res.text = value
-      return res
-    end
+  def self.value(value)
+    res = REXML::Element.new 'resourceData'
+    res.text = value
+    return res
+  end
 
-    def self.to_xtm2_si(ref)
-      x = REXML::Element.new 'topicRef'
-      x.add_attribute('href', "#{ref}")
+  def self.to_xtm2_si(ref)
+    x = REXML::Element.new 'topicRef'
+    x.add_attribute('href', "#{ref}")
 
-      return x
-
-    end
-
-    def self.to_xtm2_ref(ref)
-      x = REXML::Element.new 'topicRef'
-      x.add_attribute('href', "##{ref}")
-
-      return x
-    end
+    return x
 
   end
 
