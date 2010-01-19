@@ -99,6 +99,11 @@ class ActiveRecord::Base
     #Create Intance
     x << topic_to_xtm2
 
+    associations.each do |as|
+      list = associations_to_xtm2(as) unless self.send("#{as}").blank?
+      list.each {|assoc_type| x << assoc_type } unless list.blank?
+    end
+
     return doc
   end
 
@@ -143,25 +148,37 @@ class ActiveRecord::Base
       x << occurrence_to_xtm2(o) unless self.send("#{o}").blank?
 
     end
-    associations.each do |as|
-      x << association_to_xtm2(as) unless self.send("#{as}").blank?
-    end
 
     return x
   end
 
   # returns the XTM 2.0 representation of this association as an REXML::Element
-  def association_to_xtm2(acc)
+  def associations_to_xtm2(acc)
 
-    roles = self.send "#{acc}"
+    assoc = self.send("#{acc}")
 
-    x = REXML::Element.new 'association'
-    TOXTM2.locator(absolute_identifier.to_s+"#"+acc.to_s)
-    x << TOXTM2.type(acc.to_s)
+    if assoc.is_a?(Array)
+      acc_instances = assoc
+    else
+      acc_instances = []
+      acc_instances.push(assoc)
+    end
 
-    roles.each { |r| x << association_role_to_xtm2(r,acc.to_s) }
+    associations = []
 
-    return x
+    acc_instances.each do |acc_instance|
+      #Assosciation
+      x = REXML::Element.new 'association'
+      TOXTM2.locator(absolute_identifier.to_s+"#"+acc.to_s)
+      x << TOXTM2.type(acc.to_s)
+
+      #Roles
+      x << association_role_to_xtm2(self,self.absolute_identifier, acc.to_s)
+      x << association_role_to_xtm2(acc_instance, acc_instance.absolute_identifier, acc.to_s)
+      associations << x
+    end
+
+    return associations
   end
 
   def name_to_xtm2(name)
@@ -190,13 +207,13 @@ class ActiveRecord::Base
     return x
   end
 
-  def association_role_to_xtm2(acc_role, acc)
+  def association_role_to_xtm2(acc_role_object, acc_role_loc, acc)
 
     x = REXML::Element.new 'role'
 
-    x << TOXTM2.locator(absolute_identifier.to_s+"#"+acc_role.class.to_s)
-    x << TOXTM2.type(acc+"_"+acc_role.class.to_s)
-    x << TOXTM2.to_xtm2_si(acc_role.absolute_identifier.to_s)
+    x << TOXTM2.locator(acc_role_loc)
+    x << TOXTM2.type(acc+"_"+acc_role_object.class.to_s)
+    x << TOXTM2.to_xtm2_si(acc_role_object.absolute_identifier.to_s)
 
     return x
   end
