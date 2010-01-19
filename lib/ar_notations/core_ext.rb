@@ -114,6 +114,10 @@ class ActiveRecord::Base
   self.associations ||=[]
 
   protected
+  
+  def absolute_identifier
+    url_to(self)
+  end
 
   def psi
     return absolute_identifier.sub(self.identifier, "")
