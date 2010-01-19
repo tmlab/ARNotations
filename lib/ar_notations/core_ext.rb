@@ -3,6 +3,14 @@ puts "Core Extensions geladen"
 module TOXTM2
   require 'rexml/document'
 
+  def self.xml_doc
+    dtd = ["topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd"]
+
+    doc = REXML::Document.new
+    doc << REXML::DocType.new(dtd)
+    doc << REXML::XMLDecl.new
+  end
+
   def self.type(type)
     res = REXML::Element.new('type')
     res << TOXTM2.to_xtm2_ref(type)
