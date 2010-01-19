@@ -64,9 +64,8 @@ end
 class ActionController::Base
   include TOXTM2
   def array_to_xtm2(array)
-    doc = REXML::Document.new
-    doc << REXML::XMLDecl.new
 
+    doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
 
     array.each() { |topic| x << TOXTM2::topic_as_type(topic.identifier, topic.absolute_identifier) }
@@ -79,11 +78,8 @@ class ActiveRecord::Base
   include TOXTM2
   def to_xtm2
     require 'set'
-    
-    puts "To_xtm2 aufgerufen fuer: " + absolute_identifier
-    doc = REXML::Document.new
-    doc << REXML::XMLDecl.new
 
+    doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
 
     x << REXML::Comment.new("Occurrences count: #{occurrences.size}")
