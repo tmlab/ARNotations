@@ -71,6 +71,7 @@ end
 class ActiveRecord::Base
   include TOXTM2
   
+  
   def to_xtm2
     require 'set'
     
