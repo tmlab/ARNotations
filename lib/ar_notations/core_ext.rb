@@ -63,7 +63,6 @@ end
 
 class ActionController::Base
   include TOXTM2
-  
   def array_to_xtm2(array)
     doc = REXML::Document.new
     doc << REXML::XMLDecl.new
@@ -78,8 +77,6 @@ end
 
 class ActiveRecord::Base
   include TOXTM2
-  
-  
   def to_xtm2
     require 'set'
     
@@ -94,7 +91,7 @@ class ActiveRecord::Base
 
     #Create types
     x << TOXTM2::topic_as_type(self.class.to_s, psi)
-    
+
     types = names.to_set
     types << occurrences
     types << associations
@@ -122,7 +119,7 @@ class ActiveRecord::Base
   self.associations ||=[]
 
   protected
-  
+
   def absolute_identifier
     url_to(self)
   end
