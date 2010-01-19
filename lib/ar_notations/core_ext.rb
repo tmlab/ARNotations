@@ -62,7 +62,7 @@ class ActionController::Base
 
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
 
-    array.each() { |topic| x << TOXTM2::topic_as_type(topic.to_s, topic.absolute_identifier) }
+    array.each() { |topic| x << TOXTM2::topic_as_type(topic.identifier, topic.absolute_identifier) }
 
     return doc
   end
