@@ -173,7 +173,7 @@ class ActiveRecord::Base
       x << TOXTM2.type(acc.to_s)
 
       #Roles
-      x << association_role_to_xtm2(self,self.absolute_identifier, acc.to_s)
+      x << association_role_to_xtm2(self, "#"+self.identifier, acc.to_s)
       x << association_role_to_xtm2(acc_instance, acc_instance.absolute_identifier, acc.to_s)
       associations << x
     end
