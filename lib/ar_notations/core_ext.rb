@@ -241,6 +241,7 @@ class ActiveRecord::Base
     acc_instances.delete_if { |x| x.blank? }
 
     acc_instances.each do |acc_instance|
+
       #Assosciation
       x = REXML::Element.new 'association'
       TOXTM2.locator(absolute_identifier.to_s+"#"+acc.to_s)
@@ -255,17 +256,25 @@ class ActiveRecord::Base
     return associations
   end
 
-  def name_to_xtm2(name)
+  def name_to_xtm2(name, name_attr={})
+
 
     value = self.send "#{name}"
 
+    x = REXML::Element.new 'name'
+    #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
+
+    name_attr ||= {}
+
+    name_attr[:psi] ||=name.to_s
+    x << TOXTM2.type(name_attr[:psi])
+
     if value
-      x = REXML::Element.new 'name'
-      x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
-      x << TOXTM2.type(name.to_s)
-      (x << REXML::Element.new('value')).text = value # adds the value within a value-element
-      return x
+      x << TOXTM2.value(value)
+
     end
+
+    return x
   end
 
   def occurrence_to_xtm2(occ)
