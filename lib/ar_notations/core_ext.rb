@@ -166,7 +166,7 @@ class ActiveRecord::Base
     x << topic_to_xtm2
 
     associations.each do |as|
-      list = associations_to_xtm2(as) unless self.send("#{as}").blank?
+      list = associations_to_xtm2(as)
       list.each {|assoc_type| x << assoc_type } unless list.blank?
     end
 
