@@ -66,7 +66,16 @@ class ActionController::Base
     doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
 
-    array.each() { |topic| x << TOXTM2::topic_as_type(topic.identifier, topic.absolute_identifier) }
+    #collect types
+    types = {}
+
+    array.each do |topic|
+      types[:topic.class.to_s] = TOXTM2::topic_as_type(topic.class.to_s, :psi => topic.get_psi)
+    end
+
+    types.each_value { |topic_type| x << topic_type }
+
+    array.each() { |topic| x << topic.topic_stub }
 
     return doc
   end
