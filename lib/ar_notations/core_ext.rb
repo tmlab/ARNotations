@@ -83,6 +83,56 @@ end
 
 class ActiveRecord::Base
   include TOXTM2
+
+  class_inheritable_accessor :item_identifiers
+  class_inheritable_accessor :subject_identifiers
+  class_inheritable_accessor :names
+  class_inheritable_accessor :occurrences
+  class_inheritable_accessor :associations
+  class_inheritable_accessor :psi
+  class_inheritable_accessor :topic_maps
+  def self.has_psi(psi)
+
+    self.psi psi
+  end
+
+  def self.has_topicmaps(*attributes)
+    self.topic_maps ||=[]
+
+    self.topic_maps.concat(list)
+
+  end
+
+  def self.has_item_identifiers(*attributes)
+    self.item_identifiers ||=[]
+
+    self.item_identifiers.concat(attributes)
+  end
+
+  def self.has_subject_identifiers(*attributes)
+    self.subject_identifiers ||=[]
+
+    self.subject_identifiers.concat(attributes)
+  end
+
+  def self.has_names(*attributes)
+    self.names ||=[]
+
+    self.names.concat(attributes)
+  end
+
+  def self.has_occurrences(*attributes)
+    self.occurrences ||=[]
+
+    self.occurrences.concat(attributes)
+  end
+
+  def self.has_associations(*attributes)
+    self.associations ||=[]
+
+    self.associations.concat(attributes)
+  end
+
   def to_xtm2
     require 'set'
 
