@@ -145,15 +145,21 @@ class ActiveRecord::Base
       x << TOXTM2::topic_as_type(self.class.to_s, :psi => psi)
     end
 
-    #Create types
-    x << TOXTM2::topic_as_type(self.class.to_s, psi)
+    types = names.dclone
+    types.concat(occurrences) unless occurrences.blank?
+    types.concat(associations) unless associations.blank?
 
-    types = names.to_set
-    types << occurrences
-    types << associations
+    types.each do |type|
+      attributes = type if type.is_a? Hash
+      attributes ||= {}
 
-    names.each do |types|
-      x << TOXTM2::topic_as_type(types.to_s, psi+types.to_s) unless self.send("#{types}").blank?
+      if psi.blank?
+        attributes[:psi] ||= self.get_psi+"#"+type.to_s
+      else
+        attributes[:psi] ||= self.psi+"#"+type.to_s
+      end
+
+      x << TOXTM2::topic_as_type(type.to_s, attributes)
     end
 
     #Create Intance
