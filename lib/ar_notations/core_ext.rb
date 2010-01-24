@@ -238,6 +238,8 @@ class ActiveRecord::Base
 
     associations = []
 
+    acc_instances.delete_if { |x| x.blank? }
+
     acc_instances.each do |acc_instance|
       #Assosciation
       x = REXML::Element.new 'association'
