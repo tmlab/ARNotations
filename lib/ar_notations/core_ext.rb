@@ -182,7 +182,7 @@ class ActiveRecord::Base
     end
   end
 
-  def psi
+  def get_psi
     return absolute_identifier.sub(self.identifier, "")
   end
 
