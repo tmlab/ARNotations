@@ -45,10 +45,7 @@ module TOXTM2
   end
 
   def self.to_xtm2_ref(ref)
-    x = REXML::Element.new 'topicRef'
-    x.add_attribute('href', "##{ref}")
-
-    return x
+    return to_xtm2_si("#"+ref)
   end
 
   def self.topic_as_type(id, topic)
