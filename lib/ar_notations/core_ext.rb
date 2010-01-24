@@ -134,7 +134,6 @@ class ActiveRecord::Base
   end
 
   def to_xtm2
-    require 'set'
 
     doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
