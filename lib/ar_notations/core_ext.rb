@@ -173,22 +173,13 @@ class ActiveRecord::Base
     return doc
   end
 
-  class_inheritable_accessor :item_identifiers
-  class_inheritable_accessor :subject_identifiers
-  class_inheritable_accessor :names
-  class_inheritable_accessor :occurrences
-  class_inheritable_accessor :associations
+  def self.absolute_identifier
 
-  self.item_identifiers ||= []
-  self.subject_identifiers ||= []
-  self.names ||=[]
-  self.occurrences ||=[]
-  self.associations ||=[]
-
-  protected
-
-  def absolute_identifier
-    url_to(self)
+    if self.respond_to? :url_to
+      return url_to(self)
+    else
+      return ""
+    end
   end
 
   def psi
