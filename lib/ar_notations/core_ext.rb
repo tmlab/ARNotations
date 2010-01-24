@@ -138,8 +138,12 @@ class ActiveRecord::Base
     doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
 
-    x << REXML::Comment.new("Occurrences count: #{occurrences.size}")
-    x << REXML::Comment.new("Associations count: #{associations.size}")
+    #Create types
+    if psi.blank?
+      x << TOXTM2::topic_as_type(self.class.to_s, :psi => get_psi)
+    else
+      x << TOXTM2::topic_as_type(self.class.to_s, :psi => psi)
+    end
 
     #Create types
     x << TOXTM2::topic_as_type(self.class.to_s, psi)
