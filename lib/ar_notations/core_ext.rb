@@ -189,22 +189,37 @@ class ActiveRecord::Base
   # returns the XTM 2.0 representation of this topic as an REXML::Element
   def topic_to_xtm2
 
+    x = topic_stub
+
+    occurrences.each do |o, o_attr|
+      x << occurrence_to_xtm2(o, o_attr)
+
+    end unless occurrences.blank?
+
+    return x
+  end
+
+  def topic_stub
     x = REXML::Element.new('topic')
     x.add_attribute('id', self.identifier)
 
-    item_identifiers.each { |ii| x << TOXTM2.locator(ii) }
-    subject_identifiers.each { |si| x << TOXTM2.locator(si, "subjectIdentifier") }
+    item_identifiers.each do |ii|
+      loc = self.send("#{ii}")
+      x << TOXTM2.locator(loc)
+    end unless item_identifiers.blank?
+
+    subject_identifiers.each do |si|
+      si_value = self.send("#{si}")
+      x << TOXTM2.locator(si_value, "subjectIdentifier")
+    end unless subject_identifiers.blank?
+
     x << TOXTM2.locator(absolute_identifier) # itemIdentity
 
     x << TOXTM2.instanceOf(self.class.to_s)
 
-    names.each do |n|
-      x << name_to_xtm2(n) unless self.send("#{n}").blank?
-    end
-    occurrences.each do |o|
-      x << occurrence_to_xtm2(o) unless self.send("#{o}").blank?
-
-    end
+    names.each do |n, n_attr|
+      x << name_to_xtm2(n, n_attr)
+    end unless names.blank?
 
     return x
   end
