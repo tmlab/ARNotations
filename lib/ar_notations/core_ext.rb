@@ -277,15 +277,22 @@ class ActiveRecord::Base
     return x
   end
 
-  def occurrence_to_xtm2(occ)
+  def occurrence_to_xtm2(occ, occ_attr)
 
     value = self.send("#{occ}")
 
     x = REXML::Element.new 'occurrence'
 
-    x << TOXTM2.locator(absolute_identifier.to_s+"#"+occ.to_s)
-    x << TOXTM2.type(occ.to_s)
-    x << TOXTM2.value(value)
+    #x << TOXTM2.locator(absolute_identifier.to_s+"#"+occ.to_s)
+
+    occ_attr ||= {}
+
+    occ_attr[:psi] ||=occ.to_s
+    x << TOXTM2.type(occ_attr[:psi])
+
+    if value
+      x << TOXTM2.value(value)
+    end
 
     return x
   end
@@ -294,9 +301,9 @@ class ActiveRecord::Base
 
     x = REXML::Element.new 'role'
 
-    x << TOXTM2.locator(acc_role_loc)
+    #x << TOXTM2.locator(acc_role_loc)
     x << TOXTM2.type(acc+"_"+acc_role_object.class.to_s)
-    x << TOXTM2.to_xtm2_si(acc_role_object.absolute_identifier.to_s)
+    x << TOXTM2.to_xtm2_si(acc_role_loc)
 
     return x
   end
