@@ -90,17 +90,16 @@ class ActiveRecord::Base
   class_inheritable_accessor :occurrences
   class_inheritable_accessor :associations
   class_inheritable_accessor :psi
-  class_inheritable_accessor :topic_maps
+  class_inheritable_accessor :topic_map
+  
   def self.has_psi(psi)
 
     self.psi psi
   end
 
-  def self.has_topicmaps(*attributes)
-    self.topic_maps ||=[]
+  def self.has_topicmap(topicmap)
 
-    self.topic_maps.concat(list)
-
+    self.topic_map = topicmap
   end
 
   def self.has_item_identifiers(*attributes)

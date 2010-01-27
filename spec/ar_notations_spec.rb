@@ -8,10 +8,23 @@ describe ActiveRecord::Base do
 
   end
 
-  describe "has_topicmaps" do
+  describe "has_topicmap" do
 
-    it "allows binding a Topic to some specifig topicmaps"
+    it "allows binding a Topic to some specific topicmap" do
+      Person.class_eval do
+        has_topicmap "http://psi.ontopedia.net/FOAF_Vocabulary"
+      end
+    end
+    
+    it "sets the topicmap for the topic type" do
+      Person.topic_map.should == "http://psi.ontopedia.net/FOAF_Vocabulary"
+    end
 
+    it "sets the topicmap for every instance of this topic type" do
+      peter = Person.new
+      peter.topic_map.should == "http://psi.ontopedia.net/FOAF_Vocabulary" 
+    end
+    
   end
 
   describe "has_item_identifiers" do
