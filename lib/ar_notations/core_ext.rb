@@ -93,7 +93,7 @@ class ActiveRecord::Base
   class_inheritable_accessor :topic_maps
   def self.has_psi(psi)
 
-    self.psi psi
+    self.psi= psi
   end
 
   def self.has_topicmaps(*attributes)

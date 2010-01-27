@@ -4,7 +4,20 @@ describe ActiveRecord::Base do
 
   describe "has_psi" do
 
-    it "allows to add a specific Subject-Identifiers as type for a Topic"
+    it "allows to add a specific Subject-Identifiers as type for a Topic" do
+      Person.class_eval do
+        has_psi "http://psi.ontopedia.net/foaf_Person"
+      end
+    end
+    
+    it "sets the psi for the topic type" do
+      Person.psi.should == "http://psi.ontopedia.net/foaf_Person"
+    end
+
+    it "sets the psi for every instance of this topic type" do
+      peter = Person.new
+      peter.psi.should == "http://psi.ontopedia.net/foaf_Person"
+    end
 
   end
 
