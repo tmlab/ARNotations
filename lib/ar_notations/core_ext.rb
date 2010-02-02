@@ -140,7 +140,7 @@ class ActiveRecord::Base
   def to_xtm2
 
     doc = TOXTM2::xml_doc
-    x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
+    x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0', 'reifier' => "#tmtopic"}
 
     #Create types
     if psi.blank?
@@ -190,6 +190,14 @@ class ActiveRecord::Base
       list.each {|assoc_type| x << assoc_type } unless list.blank?
     end
 
+    #Create TopicMap ID Reification
+    y = REXML::Element.new('topic')
+    y.add_attribute('id', "tmtopic")
+    z = REXML::Element.new 'name'
+    z << TOXTM2.value(self.topic_map)
+    y << z
+    x << y
+    
     return doc
   end
 
