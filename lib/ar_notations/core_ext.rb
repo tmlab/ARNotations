@@ -147,7 +147,23 @@ class ActiveRecord::Base
     types = names.dclone
     types.concat(occurrences) unless occurrences.blank?
     types.concat(associations) unless associations.blank?
-
+    
+    acc_types = []
+      
+    associations.each do |accs|
+      
+      accs_p = self.send("#{accs}")
+      
+      accs_p.each do |acc_instance|
+        acc_types << accs.to_s+"_"+acc_instance.class.to_s
+        acc_types << accs.to_s+"_"+self.class.to_s
+      end unless accs_p.blank?
+      
+    end unless associations.blank?
+    
+    types.concat(acc_types.uniq)
+    
+    
     types.each do |type|
       attributes = type if type.is_a? Hash
       attributes ||= {}
