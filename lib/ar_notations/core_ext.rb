@@ -87,6 +87,7 @@ class ActiveRecord::Base
   class_inheritable_accessor :item_identifiers
   class_inheritable_accessor :subject_identifiers
   class_inheritable_accessor :names
+  class_inheritable_accessor :default_name
   class_inheritable_accessor :occurrences
   class_inheritable_accessor :associations
   class_inheritable_accessor :psi
@@ -118,6 +119,10 @@ class ActiveRecord::Base
     self.names ||=[]
 
     self.names.concat(attributes)
+  end
+
+  def self.has_default_name(def_name)
+    self.default_name = def_name
   end
 
   def self.has_occurrences(*attributes)
@@ -232,6 +237,8 @@ class ActiveRecord::Base
 
     x << TOXTM2.instanceOf(self.class.to_s)
 
+    x << default_name_to_xtm2(default_name)
+    
     names.each do |n, n_attr|
       x << name_to_xtm2(n, n_attr)
     end unless names.blank?
@@ -271,6 +278,21 @@ class ActiveRecord::Base
     return associations
   end
 
+  def default_name_to_xtm2(name)
+    value = self.send "#{name}"
+
+    x = REXML::Element.new 'name'
+    #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
+
+    if value
+      x << TOXTM2.value(value)
+
+    end
+
+    return x
+    
+  end
+  
   def name_to_xtm2(name, name_attr={})
 
 
