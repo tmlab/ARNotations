@@ -153,7 +153,12 @@ class ActiveRecord::Base
       x << TOXTM2::topic_as_type(self.class.to_s, :psi => psi)
     end
 
-    types = names.dclone
+    if names.blank?
+      types = []
+    else
+      types = names.dclone
+    end
+
     types.concat(occurrences) unless occurrences.blank?
     types.concat(associations) unless associations.blank?
 
@@ -191,7 +196,7 @@ class ActiveRecord::Base
     associations.each do |as|
       list = associations_to_xtm2(as)
       list.each {|assoc_type| x << assoc_type } unless list.blank?
-    end
+    end unless associations.blank?
 
     #Create TopicMap ID Reification
     y = REXML::Element.new('topic')
