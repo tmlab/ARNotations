@@ -66,11 +66,15 @@ class ActionController::Base
     doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0'}
 
+    #TODO
+    #First we need the "more_information" occurrence
+    x << TOXTM2::topic_as_type("more_information", :psi => "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3")
+    
     #collect types
     types = {}
 
     array.each do |topic|
-      types[:topic.class.to_s] = TOXTM2::topic_as_type(topic.class.to_s, :psi => topic.get_psi)
+      types[topic.class.to_s] = TOXTM2::topic_as_type(topic.class.to_s, :psi => topic.get_psi)
     end
 
     types.each_value { |topic_type| x << topic_type }
@@ -241,7 +245,9 @@ class ActiveRecord::Base
       x << TOXTM2.locator(si_value, "subjectIdentifier")
     end unless subject_identifiers.blank?
 
-    x << TOXTM2.locator(absolute_identifier) # itemIdentity
+    #TODO Needs more information Occurrence
+    #    x << TOXTM2.locator(absolute_identifier) # itemIdentity
+    x << occurrence_to_xtm2("more_information", {}, absolute_identifier)
 
     x << TOXTM2.instanceOf(self.class.to_s)
 
@@ -322,15 +328,11 @@ class ActiveRecord::Base
     return x
   end
 
-  def occurrence_to_xtm2(occ, occ_attr)
-
-    value = self.send("#{occ}")
-
+  def occurrence_to_xtm2(occ, occ_attr= {}, value = self.send("#{occ}"))
+    
     x = REXML::Element.new 'occurrence'
 
     #x << TOXTM2.locator(absolute_identifier.to_s+"#"+occ.to_s)
-
-    occ_attr ||= {}
 
     occ_attr[:psi] ||=occ.to_s
     x << TOXTM2.type(occ_attr[:psi])
