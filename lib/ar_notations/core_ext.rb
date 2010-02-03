@@ -76,9 +76,10 @@ class ActionController::Base
     array.each do |topic|
       types[topic.class.to_s] = TOXTM2::topic_as_type(topic.class.to_s, :psi => topic.get_psi)
     end
-
+    
     types.each_value { |topic_type| x << topic_type }
 
+      
     array.each() { |topic| x << topic.topic_stub }
 
     return doc
@@ -96,7 +97,6 @@ class ActiveRecord::Base
   class_inheritable_accessor :associations
   class_inheritable_accessor :psi
   class_inheritable_accessor :topic_map
-  
   def self.has_psi(psi)
 
     self.psi= psi
@@ -156,23 +156,22 @@ class ActiveRecord::Base
     types = names.dclone
     types.concat(occurrences) unless occurrences.blank?
     types.concat(associations) unless associations.blank?
-    
+
     acc_types = []
-      
+
     associations.each do |accs|
-      
+
       accs_p = self.send("#{accs}")
-      
+
       accs_p.each do |acc_instance|
         acc_types << accs.to_s+"_"+acc_instance.class.to_s
         acc_types << accs.to_s+"_"+self.class.to_s
       end unless accs_p.blank?
-      
+
     end unless associations.blank?
-    
+
     types.concat(acc_types.uniq)
-    
-    
+
     types.each do |type|
       attributes = type if type.is_a? Hash
       attributes ||= {}
@@ -256,7 +255,9 @@ class ActiveRecord::Base
     names.each do |n, n_attr|
       x << name_to_xtm2(n, n_attr)
     end unless names.blank?
-
+    
+    
+    
     return x
   end
 
@@ -308,7 +309,6 @@ class ActiveRecord::Base
   end
   
   def name_to_xtm2(name, name_attr={})
-
 
     value = self.send "#{name}"
 
