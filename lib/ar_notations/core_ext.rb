@@ -31,6 +31,12 @@ module TOXTM2
   end
 
   def self.value(value)
+    res = REXML::Element.new 'value'
+    res.text = value
+    return res
+  end
+  
+  def self.res_data(value)
     res = REXML::Element.new 'resourceData'
     res.text = value
     return res
@@ -343,7 +349,7 @@ class ActiveRecord::Base
     x << TOXTM2.type(occ_attr[:psi])
 
     if value
-      x << TOXTM2.value(value)
+      x << TOXTM2.res_data(value)
     end
 
     return x
