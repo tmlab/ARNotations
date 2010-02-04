@@ -88,6 +88,14 @@ class ActionController::Base
       
     array.each() { |topic| x << topic.topic_stub }
 
+    #Create TopicMap ID Reification
+    y = REXML::Element.new('topic')
+    y.add_attribute('id', "tmtopic")
+    z = REXML::Element.new 'name'
+    z << TOXTM2.value(array.first.topic_map)
+    y << z
+    x << y
+
     return doc
   end
 end
