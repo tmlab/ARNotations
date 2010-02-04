@@ -35,7 +35,7 @@ module TOXTM2
     res.text = value
     return res
   end
-  
+
   def self.res_data(value)
     res = REXML::Element.new 'resourceData'
     res.text = value
@@ -75,17 +75,16 @@ class ActionController::Base
     #TODO
     #First we need the "more_information" occurrence
     x << TOXTM2::topic_as_type("more_information", :psi => "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3")
-    
+
     #collect types
     types = {}
 
     array.each do |topic|
       types[topic.class.to_s] = TOXTM2::topic_as_type(topic.class.to_s, :psi => topic.get_psi)
     end
-    
+
     types.each_value { |topic_type| x << topic_type }
 
-      
     array.each() { |topic| x << topic.topic_stub }
 
     #Create TopicMap ID Reification
@@ -324,10 +323,8 @@ class ActiveRecord::Base
     end
 
     return x
-    
+
   end
-  
-  def name_to_xtm2(name, name_attr={})
 
     value = self.send "#{name}"
 
@@ -348,7 +345,7 @@ class ActiveRecord::Base
   end
 
   def occurrence_to_xtm2(occ, occ_attr= {}, value = self.send("#{occ}"))
-    
+
     x = REXML::Element.new 'occurrence'
 
     #x << TOXTM2.locator(absolute_identifier.to_s+"#"+occ.to_s)
