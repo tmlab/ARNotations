@@ -268,14 +268,14 @@ class ActiveRecord::Base
 
     x << TOXTM2.instanceOf(self.class.to_s)
 
-    x << default_name_to_xtm2(default_name)
-    
-    names.each do |n, n_attr|
-      x << name_to_xtm2(n, n_attr)
-    end unless names.blank?
-    
-    
-    
+    if topic.default_name.blank?
+      topic.names.first do |n, n_attr|
+        x << name_to_xtm2(n, n_attr, topic)
+      end unless topic.names.blank?
+    else
+      x << default_name_to_xtm2(topic.default_name, topic)
+    end
+
     return x
   end
 
