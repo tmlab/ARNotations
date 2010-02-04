@@ -58,6 +58,9 @@ module TOXTM2
     x = REXML::Element.new('topic')
     x.add_attribute('id', id)
 
+    y = REXML::Element.new 'name'
+    y << TOXTM2.value(id)
+    x << y
     x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
 
     return x
@@ -159,6 +162,10 @@ class ActiveRecord::Base
     doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0', 'reifier' => "#tmtopic"}
 
+    #TODO
+    #First we need the "more_information" occurrence
+    x << TOXTM2::topic_as_type("more_information", :psi => "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3")
+
     #Create types
     if psi.blank?
       x << TOXTM2::topic_as_type(self.class.to_s, :psi => get_psi)
@@ -176,6 +183,8 @@ class ActiveRecord::Base
     types.concat(associations) unless associations.blank?
 
     acc_types = []
+
+    associations = associations.to_a
 
     associations.each do |accs|
 
@@ -200,8 +209,20 @@ class ActiveRecord::Base
         attributes[:psi] ||= self.psi+"#"+type.to_s
       end
 
-      x << TOXTM2::topic_as_type(type.to_s, attributes)
+      x << TOXTM2::topic_as_type(type.to_s, attributes) unless self.send("#{type.to_s}").blank?
     end
+
+    #Create assosciates Instances
+    associations.each do |accs|
+
+      accs_p = self.send("#{accs}")
+
+      accs_p = accs_p.to_s
+      accs_p.each do |acc_instance|
+        x << topic_stub(acc_instance)
+      end unless accs_p.blank?
+
+    end unless associations.blank?
 
     #Create Intance
     x << topic_to_xtm2
@@ -218,7 +239,7 @@ class ActiveRecord::Base
     z << TOXTM2.value(self.topic_map)
     y << z
     x << y
-    
+
     return doc
   end
 
@@ -248,17 +269,17 @@ class ActiveRecord::Base
     return x
   end
 
-  def topic_stub
+  def topic_stub(topic = self)
     x = REXML::Element.new('topic')
-    x.add_attribute('id', self.identifier)
+    x.add_attribute('id', topic.identifier)
 
     item_identifiers.each do |ii|
-      loc = self.send("#{ii}")
+      loc = topic.send("#{ii}")
       x << TOXTM2.locator(loc)
     end unless item_identifiers.blank?
 
     subject_identifiers.each do |si|
-      si_value = self.send("#{si}")
+      si_value = topic.send("#{si}")
       x << TOXTM2.locator(si_value, "subjectIdentifier")
     end unless subject_identifiers.blank?
 
@@ -299,16 +320,16 @@ class ActiveRecord::Base
       x << TOXTM2.type(acc.to_s)
 
       #Roles
-      x << association_role_to_xtm2(self, "#"+self.identifier, acc.to_s)
-      x << association_role_to_xtm2(acc_instance, acc_instance.absolute_identifier, acc.to_s)
+      x << association_role_to_xtm2(self, acc.to_s)
+      x << association_role_to_xtm2(acc_instance, acc.to_s)
       associations << x
     end
 
     return associations
   end
 
-  def default_name_to_xtm2(name)
-    value = self.send "#{name}"
+  def default_name_to_xtm2(name, topic=self)
+    value = topic.send "#{name}"
 
     x = REXML::Element.new 'name'
     #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
@@ -322,7 +343,9 @@ class ActiveRecord::Base
 
   end
 
-    value = self.send "#{name}"
+  def name_to_xtm2(name, name_attr={}, topic=self)
+
+    value = topic.send "#{name}"
 
     x = REXML::Element.new 'name'
     #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
@@ -349,20 +372,18 @@ class ActiveRecord::Base
     occ_attr[:psi] ||=occ.to_s
     x << TOXTM2.type(occ_attr[:psi])
 
-    if value
-      x << TOXTM2.res_data(value)
-    end
+    x << TOXTM2.res_data(value) unless value.blank?
 
     return x
   end
 
-  def association_role_to_xtm2(acc_role_object, acc_role_loc, acc)
+  def association_role_to_xtm2(acc_role_object, acc)
 
     x = REXML::Element.new 'role'
 
     #x << TOXTM2.locator(acc_role_loc)
     x << TOXTM2.type(acc+"_"+acc_role_object.class.to_s)
-    x << TOXTM2.to_xtm2_si(acc_role_loc)
+    x << TOXTM2.to_xtm2_ref(acc_role_object.identifier)
 
     return x
   end
