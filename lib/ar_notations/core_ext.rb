@@ -262,11 +262,7 @@ class ActiveRecord::Base
       x << TOXTM2.locator(si_value, "subjectIdentifier")
     end unless subject_identifiers.blank?
 
-    #TODO Needs more information Occurrence
-    #    x << TOXTM2.locator(absolute_identifier) # itemIdentity
-    x << occurrence_to_xtm2("more_information", {}, absolute_identifier)
-
-    x << TOXTM2.instanceOf(self.class.to_s)
+    x << TOXTM2.instanceOf(topic.class.to_s)
 
     if topic.default_name.blank?
       topic.names.first do |n, n_attr|
