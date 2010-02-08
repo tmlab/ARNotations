@@ -5,6 +5,10 @@ class ActionController::Base
   
   def array_to_xtm2(array)
 
+    if array.blank?
+      return
+    end
+    
     doc = TOXTM2::xml_doc
     x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0', 'reifier' => "#tmtopic"}
 
