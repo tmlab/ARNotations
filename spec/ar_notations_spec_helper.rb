@@ -1,5 +1,6 @@
 begin
-  require File.dirname(__FILE__) + '/../../../../spec/spec_helper'
+  $: << File.expand_path(File.dirname(__FILE__) + '/../../../../spec/')
+  require 'spec_helper'
 rescue LoadError
   puts "You need to install rspec in your base app"
   exit
