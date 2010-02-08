@@ -101,5 +101,21 @@ describe ActiveRecord::Base do
     it "uses the given associations in the exportet topicmap fragment"
     
   end
+  
+  describe "to_xtm2" do
+    
+    it "should return the current AR Object as xtm2 Fragment"
+  end
+  
+  describe "topic_to_xtm2" do
+    
+    it "should return the current topic as xtm2"
+  end
+  
+  describe "topic_stub" do
+    
+    it "should return the current topic as xtm2 stub"
+    
+  end
 
 end
