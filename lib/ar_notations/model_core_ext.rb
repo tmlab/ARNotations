@@ -21,38 +21,38 @@ class ActiveRecord::Base
     self.topic_map = topicmap
   end
 
-  def self.has_item_identifiers(*attributes)
+  def self.has_item_identifier(*attributes)
     self.item_identifiers ||=[]
 
-    self.item_identifiers.concat(attributes)
+    self.item_identifiers << attributes
   end
 
-  def self.has_subject_identifiers(*attributes)
+  def self.has_subject_identifier(*attributes)
     self.subject_identifiers ||=[]
 
-    self.subject_identifiers.concat(attributes)
+    self.subject_identifiers << attributes
   end
 
-  def self.has_names(*attributes)
+  def self.has_name(*attributes)
     self.names ||=[]
 
-    self.names.concat(attributes)
+    self.names  << attributes
   end
 
   def self.has_default_name(def_name)
     self.default_name = def_name
   end
 
-  def self.has_occurrences(*attributes)
+  def self.has_occurrence(*attributes)
     self.occurrences ||=[]
 
-    self.occurrences.concat(attributes)
+    self.occurrences  << attributes
   end
 
-  def self.has_associations(*attributes)
+  def self.has_association(*attributes)
     self.associations ||=[]
 
-    self.associations.concat(attributes)
+    self.associations  << attributes
   end
 
   def to_xtm2
