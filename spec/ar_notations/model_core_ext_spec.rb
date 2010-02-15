@@ -69,6 +69,12 @@ describe ActiveRecord::Base do
         has_name :firstname
       end
     end
+    
+    it "allows arnotating the class attributes to use as Names for the topic using a given PSI" do
+      Person.class_eval do
+        has_name :firstname, :psi => "http://psi.topicmapslab.de/firstname"
+      end
+    end
 
   end
 
@@ -79,6 +85,13 @@ describe ActiveRecord::Base do
         has_occurrence :degree
       end
     end
+
+    it "allows arnotating the class attributes to use as Occurrences for the topic using a given PSI" do
+      Person.class_eval do
+        has_occurrence :degree, :psi => "http://psi.topicmapslab.de/degree"
+      end
+    end
+    
     
   end
 
@@ -87,6 +100,12 @@ describe ActiveRecord::Base do
     it "allows arnotating the class attributes to use as Associations for the topic" do
       Person.class_eval do
         has_association :publications
+      end
+    end
+    
+    it "allows arnotating the class attributes to use as Associations for the topic using a given PSI" do
+      Person.class_eval do
+        has_association :publications, :psi => "http://psi.topicmapslab.de/publications"
       end
     end
     
@@ -111,12 +130,20 @@ describe ActiveRecord::Base do
   
   describe "topic_to_xtm2" do
     
-    it "should return the current topic as xtm2"
+    it "should return the current topic as xtm2" do
+      pending
+      @person = Person.new
+      @person.topic_to_xtm2.should_be_instance_of(REXML::Element)
+    end
   end
   
   describe "topic_stub" do
     
-    it "should return the current topic as xtm2 stub"
+    it "should return the current topic as xtm2 stub" do
+      pending
+      @person = Person.new
+      @person.topic_stub.should_be_instance_of(REXML::Element)
+    end
     
   end
 

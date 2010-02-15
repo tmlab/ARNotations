@@ -3,20 +3,44 @@ require 'ar_notations_spec_helper'
 describe ARNotations::Characteristics do
   
   describe "default_name_to_xtm2" do
-    
-    it "should return an xtm2 representation of the default_name"
+        
+    it "should return an xtm2 representation of the default_name" do
+      pending
+      Person.class_eval do
+        default_name :lastname
+      end
+      @person = Person.new
+      @person.lastname = "Mueller"
+      @person.default_name_to_xtm2.should_be_instance_of(REXML::Element)
+    end
     
   end
   
   describe "name_to_xtm2" do
     
-    it "should return an xtm2 representation of the name"
+    it "should return an xtm2 representation of the name" do
+      pending
+      Person.class_eval do
+        has_name :lastname
+      end
+      @person = Person.new
+      @person.lastname = "Mueller"
+      @person.name_to_xtm2(lastname).should_be_instance_of(REXML::Element)
+    end
     
   end
     
   describe "occurrence_to_xtm2" do
     
-    it "should return an xtm2 representation of the occurrence"
+    it "should return an xtm2 representation of the occurrence" do
+      pending
+      Person.class_eval do
+        has_occurrence :lastname
+      end
+      @person = Person.new
+      @person.lastname = "Mueller"
+      @person.occurrence_to_xtm2(lastname).should_be_instance_of(REXML::Element)
+    end
   
   end
   
