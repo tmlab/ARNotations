@@ -56,7 +56,7 @@ describe ActiveRecord::Base do
 
     it "allows arnotating the class attributes to use as SubjectIdentifiers for the topic" do
       Person.class_eval do
-        has_item_identifier absolute_identifier
+        has_subject_identifier "http://example.zz/si"
       end
     end
 
