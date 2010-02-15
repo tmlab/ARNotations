@@ -1,7 +1,7 @@
 require 'ar_notations_spec_helper'
   
 describe ActiveRecord::Base do
-
+  
   describe "has_psi" do
 
     it "allows to add a specific Subject-Identifiers as type for a Topic" do
@@ -19,7 +19,6 @@ describe ActiveRecord::Base do
       peter.psi.should == "http://psi.ontopedia.net/foaf_Person"
     end
 
-    it "uses the given psi in the exportet topicmap fragment"
     
   end
 
@@ -42,69 +41,72 @@ describe ActiveRecord::Base do
 
   end
 
-  describe "has_item_identifiers" do
+  describe "has_item_identifier" do
 
     it "allows arnotating the class attributes to use as ItemIdentifiers for the topic" do
       Person.class_eval do
-        has_item_identifiers :identifier
+        has_item_identifier :identifier
       end
     end
 
-    it "uses the given item_identifiers in the exportet topicmap fragment"
 
   end
 
-  describe "has_subject_identifiers" do
+  describe "has_subject_identifier" do
 
     it "allows arnotating the class attributes to use as SubjectIdentifiers for the topic" do
       Person.class_eval do
-        has_item_identifiers absolute_identifier
+        has_item_identifier absolute_identifier
       end
     end
 
-    it "uses the given subject identifiers in the exportet topicmap fragment"
-
   end
 
-  describe "has_names" do
+  describe "has_name" do
 
     it "allows arnotating the class attributes to use as Names for the topic" do
       Person.class_eval do
-        has_names :firstname
+        has_name :firstname
       end
     end
 
-    it "uses the given names in the exportet topicmap fragment"
-    
   end
 
-  describe "has_occurrences" do
+  describe "has_occurrence" do
 
     it "allows arnotating the class attributes to use as Occurrences for the topic" do
       Person.class_eval do
-        has_occurrences :degree
+        has_occurrence :degree
       end
     end
-
-    it "uses the given occurrences in the exportet topicmap fragment"
     
   end
 
-  describe "has_associations" do
+  describe "has_association" do
 
     it "allows arnotating the class attributes to use as Associations for the topic" do
       Person.class_eval do
-        has_associations :publications
+        has_association :publications
       end
     end
-    
-    it "uses the given associations in the exportet topicmap fragment"
     
   end
   
   describe "to_xtm2" do
     
-    it "should return the current AR Object as xtm2 Fragment"
+    it "should return the current AR Object as xtm2 Fragment" do
+      pending
+      #@person = mock_model(Person)      
+      #@person.stub!(:psi_prefix, "http://www.r1.exner.topicmapslab.de/people/")
+      @person = Person.new
+      
+      #@person.should_receive(:to_xtm2).and_return(@response)
+      @responce = @person.to_xtm2
+      @responce.should_be_instance_of(REXML::Document)
+      
+      @responce.should have_tag("topicMap")
+      
+    end
   end
   
   describe "topic_to_xtm2" do
