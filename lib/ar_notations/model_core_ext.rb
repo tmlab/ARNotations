@@ -1,6 +1,7 @@
 class ActiveRecord::Base
   include TOXTM2
-  include ARNotations
+  include ARNotations::Characteristics
+  include ARNotations::Id
 
   class_inheritable_accessor :item_identifiers
   class_inheritable_accessor :subject_identifiers
