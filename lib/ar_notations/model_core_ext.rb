@@ -97,9 +97,10 @@ class ActiveRecord::Base
 
     types.concat(acc_types.uniq)
 
-    types.each do |type|
-      attributes = type if type.is_a? Hash
-      attributes ||= {}
+    types.each do |type_h|
+
+      type = type_h[0]
+      attributes = type_h[1] || {}
 
       if psi.blank?
         attributes[:psi] ||= self.get_psi+"#"+type.to_s
@@ -139,19 +140,6 @@ class ActiveRecord::Base
     x << y
 
     return doc
-  end
-
-  def self.absolute_identifier
-
-    if self.respond_to? :url_to
-      return url_to(self)
-    else
-      return ""
-    end
-  end
-
-  def get_psi
-    return absolute_identifier.sub(self.identifier, "")
   end
 
   # returns the XTM 2.0 representation of this topic as an REXML::Element
