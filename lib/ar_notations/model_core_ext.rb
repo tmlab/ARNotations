@@ -165,6 +165,13 @@ class ActiveRecord::Base
   def topic_to_xtm2
 
     x = topic_stub
+        
+    names.each do |n_attr|
+      puts "n_attr.pretty_inspect" + n_attr.pretty_inspect
+      n = n_attr.at(0)
+
+      x << name_to_xtm2(n, n_attr.at(1), self)
+    end unless names.blank?
 
     occurrences.each do |o_attr|
       if o.is_a? :Hash
@@ -194,14 +201,7 @@ class ActiveRecord::Base
     end unless subject_identifiers.blank?
 
     x << TOXTM2.instanceOf(topic.class.to_s)
-
-    if topic.default_name.blank?
-      topic.names.first do |n, n_attr|
-        x << name_to_xtm2(n, n_attr, topic)
-      end unless topic.names.blank?
-    else
-      x << default_name_to_xtm2(topic.default_name, topic)
-    end
+    x << default_name_to_xtm2(topic.default_name, topic) unless topic.default_name.blank?
 
     return x
   end
