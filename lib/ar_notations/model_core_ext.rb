@@ -62,7 +62,7 @@ class ActiveRecord::Base
 
     #TODO
     #First we need the "more_information" occurrence
-    x << TOXTM2::topic_as_type("more_information", :psi => "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3")
+    x << topic_as_type("more_information", :psi => $MORE_INFORMATION)
 
     #Create types
     if psi.blank?
