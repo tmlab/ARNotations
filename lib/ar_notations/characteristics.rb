@@ -49,6 +49,20 @@ module ARNotations
 
       return x
     end
+
+    def topic_as_type(id, attributes={})
+      x = REXML::Element.new('topic')
+      x.add_attribute('id', id)
+
+      y = REXML::Element.new 'name'
+      y << TOXTM2.value(id)
+      x << y
+      x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
+      x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info])  unless attributes[:more_info].blank?
+
+      return x
+    end
+
   end
 end
 

@@ -53,16 +53,4 @@ module TOXTM2
     return to_xtm2_si("#"+ref)
   end
 
-  def self.topic_as_type(id, attributes={})
-    x = REXML::Element.new('topic')
-    x.add_attribute('id', id)
-
-    y = REXML::Element.new 'name'
-    y << TOXTM2.value(id)
-    x << y
-    x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
-
-    return x
-  end
-
 end
