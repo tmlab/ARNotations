@@ -1,8 +1,6 @@
-
 class Array
   include TOXTM2
   include ARNotations::Characteristics
-  
   def array_to_xtm2(array)
 
     if array.blank?
@@ -26,7 +24,11 @@ class Array
 
     types.each_value { |topic_type| x << topic_type }
 
-    array.each() { |topic| x << topic.topic_stub }
+    array.each() do |topic|
+      stub = topic.topic_stub
+      stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, topic.absolute_identifier)  unless topic.more_info.blank?
+      x << stub
+    end
 
     #Create TopicMap ID Reification
     y = REXML::Element.new('topic')
@@ -38,7 +40,7 @@ class Array
 
     return doc
   end
-  
+
   def to_xtm2
     return array_to_xtm2(self)
   end
