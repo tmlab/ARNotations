@@ -20,7 +20,8 @@ class Array
     types = {}
 
     array.each do |topic|
-      types[topic.class.to_s] = topic_as_type(topic.class.to_s, {:psi => topic.get_psi, :more_info =>topic.more_info})
+      types[topic.class.to_s] = topic_as_type(topic.class.to_s, {:psi => topic.get_psi})
+      #types[topic.class.to_s] = topic_as_type(topic.class.to_s, {:psi => topic.get_psi, :more_info =>topic.more_info})
     end
 
     types.each_value { |topic_type| x << topic_type }
