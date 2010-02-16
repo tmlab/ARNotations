@@ -1,4 +1,5 @@
-class ActionController::Base
+
+class Array
   include TOXTM2
   include ARNotations::Characteristics
   
@@ -35,5 +36,9 @@ class ActionController::Base
     x << y
 
     return doc
+  end
+  
+  def to_xtm2
+    return array_to_xtm2(self)
   end
 end
