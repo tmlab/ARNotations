@@ -2,6 +2,7 @@ class ActiveRecord::Base
   include TOXTM2
   include ARNotations::Characteristics
   include ARNotations::Id
+  include ARNotations::Associations
 
   class_inheritable_accessor :item_identifiers
   class_inheritable_accessor :subject_identifiers
@@ -12,6 +13,7 @@ class ActiveRecord::Base
   class_inheritable_accessor :psi
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
+  
   def self.has_more_info(more_info)
 
     self.more_info = more_info
@@ -83,22 +85,28 @@ class ActiveRecord::Base
       types = names.dclone
     end
 
-    types.concat(occurrences) unless occurrences.blank?
-    types.concat(associations) unless associations.blank?
+    types.concat(occurrences.dclone) unless occurrences.blank?
 
     acc_types = []
 
-    associations = associations.to_a
+    associations.dclone.each do |accs|
+      acc_name = accs.delete_at(0)
+      acc_opts = accs.delete_at(0)
 
-    associations.each do |accs|
+      accs_p = self.send("#{acc_name}")
 
-      accs_p = self.send("#{accs}")
+      acc_types << [acc_name.to_s, acc_opts] unless accs_p.blank?
 
-      accs_p.each do |acc_instance|
-        acc_types << accs.to_s+"_"+acc_instance.class.to_s
-        acc_types << accs.to_s+"_"+self.class.to_s
-      end unless accs_p.blank?
+      if accs_p.is_a?(Enumerable)
+        accs_p.each do |acc_instance|
+          acc_types << [acc_name.to_s+"_"+acc_instance.class.to_s, accs.delete_at(0)]
+          acc_types << [acc_name.to_s, acc_opts]
+        end unless accs_p.blank?
+      else
+        acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, accs.delete_at(0)] unless accs_p.blank?
+      end
 
+      acc_types << [acc_name.to_s+"_"+self.class.to_s, accs.delete_at(0)]
     end unless associations.blank?
 
     types.concat(acc_types.uniq)
@@ -114,17 +122,19 @@ class ActiveRecord::Base
         attributes[:psi] ||= self.psi+"#"+type.to_s
       end
 
-      x << topic_as_type(type.to_s, attributes) unless self.send("#{type.to_s}").blank?
+      x << topic_as_type(type.to_s, attributes) #unless self.send("#{type.to_s}").blank?
     end
 
     #Create assosciates Instances
-    associations.each do |accs|
+    associations.dclone.each do |accs|
 
-      accs_p = self.send("#{accs}")
+      acc_name = accs.delete_at(0)
+      accs_p = self.send("#{acc_name}")
 
-      accs_p = accs_p.to_s
+      accs_p = [accs_p] unless accs_p.is_a? Array
+
       accs_p.each do |acc_instance|
-        x << topic_stub(acc_instance)
+        x << topic_stub(acc_instance) unless acc_instance.blank?
       end unless accs_p.blank?
 
     end unless associations.blank?
@@ -189,8 +199,6 @@ class ActiveRecord::Base
     else
       x << default_name_to_xtm2(topic.default_name, topic)
     end
-    
-    x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, topic.absolute_identifier)  unless topic.more_info.blank?
 
     return x
   end
