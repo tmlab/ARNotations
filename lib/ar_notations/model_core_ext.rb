@@ -13,7 +13,6 @@ class ActiveRecord::Base
   class_inheritable_accessor :psi
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
-  
   def self.has_more_info(more_info)
 
     self.more_info = more_info
@@ -134,7 +133,11 @@ class ActiveRecord::Base
       accs_p = [accs_p] unless accs_p.is_a? Array
 
       accs_p.each do |acc_instance|
-        x << topic_stub(acc_instance) unless acc_instance.blank?
+        if !acc_instance.blank?
+          stub = topic_stub(acc_instance) unless acc_instance.blank?
+          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.absolute_identifier)
+          x << stub
+        end
       end unless accs_p.blank?
 
     end unless associations.blank?
