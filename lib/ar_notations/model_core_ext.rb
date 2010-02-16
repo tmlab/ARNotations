@@ -115,8 +115,6 @@ class ActiveRecord::Base
         attributes[:psi] ||= self.psi+"#"+type.to_s
       end
 
-      puts "Typen anlegen.. Name: " + type.to_s + " Attribute: " + attributes.to_s
-
       x << topic_as_type(type.to_s, attributes) unless self.send("#{type.to_s}").blank?
     end
 
