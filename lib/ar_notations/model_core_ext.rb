@@ -1,4 +1,3 @@
-
 class ActiveRecord::Base
   include TOXTM2
   include ARNotations::Characteristics
@@ -190,6 +189,8 @@ class ActiveRecord::Base
     else
       x << default_name_to_xtm2(topic.default_name, topic)
     end
+    
+    x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, topic.absolute_identifier)  unless topic.more_info.blank?
 
     return x
   end
