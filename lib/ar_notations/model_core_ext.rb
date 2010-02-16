@@ -1,3 +1,4 @@
+
 class ActiveRecord::Base
   include TOXTM2
   include ARNotations::Characteristics
@@ -11,6 +12,12 @@ class ActiveRecord::Base
   class_inheritable_accessor :associations
   class_inheritable_accessor :psi
   class_inheritable_accessor :topic_map
+  class_inheritable_accessor :more_info
+  def self.has_more_info(more_info)
+
+    self.more_info = more_info
+  end
+
   def self.has_psi(psi)
 
     self.psi= psi
@@ -66,9 +73,9 @@ class ActiveRecord::Base
 
     #Create types
     if psi.blank?
-      x << TOXTM2::topic_as_type(self.class.to_s, :psi => get_psi)
+      x << topic_as_type(self.class.to_s, {:psi => get_psi, :more_info => self.more_info})
     else
-      x << TOXTM2::topic_as_type(self.class.to_s, :psi => psi)
+      x << topic_as_type(self.class.to_s, {:psi => psi, :more_info => self.more_info})
     end
 
     if names.blank?
@@ -108,7 +115,9 @@ class ActiveRecord::Base
         attributes[:psi] ||= self.psi+"#"+type.to_s
       end
 
-      x << TOXTM2::topic_as_type(type.to_s, attributes) unless self.send("#{type.to_s}").blank?
+      puts "Typen anlegen.. Name: " + type.to_s + " Attribute: " + attributes.to_s
+
+      x << topic_as_type(type.to_s, attributes) unless self.send("#{type.to_s}").blank?
     end
 
     #Create assosciates Instances
@@ -147,7 +156,12 @@ class ActiveRecord::Base
 
     x = topic_stub
 
-    occurrences.each do |o, o_attr|
+    occurrences.each do |o_attr|
+      if o.is_a? :Hash
+        o = o_attr.delete(:attribute)
+      else
+        o = o_attr
+      end
       x << occurrence_to_xtm2(o, o_attr)
 
     end unless occurrences.blank?

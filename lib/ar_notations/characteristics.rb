@@ -1,6 +1,5 @@
 module ARNotations
   module Characteristics
-    
     def default_name_to_xtm2(name, topic=self)
       value = topic.send "#{name}"
 
