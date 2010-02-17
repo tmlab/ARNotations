@@ -18,11 +18,12 @@ class Array
     types = {}
 
     array.each do |topic|
-      name = topic.get_name || topic.class.to_s
-      types[topic.class.to_s] = topic_as_type({:name => name, :psi => topic.get_psi})
+      types[topic.class.to_s] = topic_as_type({:name => topic.class.to_s, :psi => topic.get_psi})
     end
 
-    types.each_value { |topic_type| x << topic_type }
+    types.each_value do |topic_type|
+      x << topic_type 
+    end
 
     array.each() do |topic|
       stub = topic.topic_stub
@@ -34,7 +35,7 @@ class Array
     y = REXML::Element.new('topic')
     y.add_attribute('id', "tmtopic")
     z = REXML::Element.new 'name'
-    z << TOXTM2.value(array.first.topic_map)
+    z << TOXTM2.value("TopicMap: " + array.first.topic_map)
     y << z
     x << y
 
