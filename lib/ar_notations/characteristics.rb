@@ -26,7 +26,7 @@ module ARNotations
 
       name_attr[:name] ||=name.to_s
         
-      x << TOXTM2.type(name_attr[:name])
+      x << TOXTM2.type(name_attr[:name].gsub(/\W+/, '_'))
 
       if value
         x << TOXTM2.value(value)
@@ -50,16 +50,18 @@ module ARNotations
       return x
     end
 
-    def topic_as_type(id, attributes={})
+    def topic_as_type(attributes={})
       x = REXML::Element.new('topic')
       id = attributes[:name]
         
-      x.add_attribute('id', id)
-
+      x.add_attribute('id', id.gsub(/\W+/,'_'))
+      
+      x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
+        
       y = REXML::Element.new 'name'
       y << TOXTM2.value(id)
       x << y
-      x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
+      
       x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info])  unless attributes[:more_info].blank?
 
       return x
