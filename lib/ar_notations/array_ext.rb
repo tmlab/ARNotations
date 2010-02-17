@@ -1,6 +1,9 @@
+require 'libxml'
+
 class Array
   include TOXTM2
-  include ARNotations::Characteristics
+  include ARNotations::Characteristics  
+
   def array_to_xtm2(array)
 
     if array.blank?

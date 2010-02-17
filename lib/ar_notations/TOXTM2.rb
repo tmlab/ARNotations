@@ -3,7 +3,8 @@ require 'libxml'
 
 
 module TOXTM2  
-
+  include LibXML
+  
   def self.xml_doc
  
     doc = LibXML::XML::Document.new
