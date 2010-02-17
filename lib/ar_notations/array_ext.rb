@@ -10,7 +10,7 @@ class Array
       return
     end
 
-    dtd = XML::Dtd.new("topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd")
+    #dtd = XML::Dtd.new("topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd")
 
     doc = TOXTM2::xml_doc
     x = XML::Node.new('topicMap')
