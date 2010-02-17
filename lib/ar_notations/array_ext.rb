@@ -27,7 +27,7 @@ class Array
     types = {}
 
     array.each do |topic|
-      types[topic.class.to_s] = topic_as_type({:name => topic.class.to_s, :psi => topic.get_psi})
+      types[topic.class.to_s] = topic_as_type({:name => topic.class.to_s, :psi => topic.psi})
     end
 
     types.each_value do |topic_type|
@@ -36,7 +36,7 @@ class Array
 
     array.each() do |topic|
       stub = topic.topic_stub
-      stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, topic.absolute_identifier)  unless topic.more_info.blank?
+      stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, topic.abs_identifier)  unless topic.more_info.blank?
       x << stub
     end
 

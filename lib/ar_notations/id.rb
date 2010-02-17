@@ -2,21 +2,8 @@ module ARNotations
   module Id
     include LibXML
     
-    def self.absolute_identifier
-
-      if self.respond_to? :url_to
-        return url_to(self)
-      else
-        return ""
-      end
-    end
-
-    def get_psi
-      if psi.blank?
-        return absolute_identifier.sub(self.identifier, "")
-      else
-        return psi
-      end
+    def abs_identifier
+      return psi+'/'+identifier
     end
 
     def get_name(topic = self)

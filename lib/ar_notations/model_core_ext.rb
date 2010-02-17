@@ -64,7 +64,7 @@ class ActiveRecord::Base
 
   def to_xtm2
 
-    dtd = XML::Dtd.new("topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd")
+    #dtd = XML::Dtd.new("topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd")
 
     doc = TOXTM2::xml_doc
     x = XML::Node.new('topicMap')
@@ -78,11 +78,7 @@ class ActiveRecord::Base
     x << topic_as_type({:name => "more_information", :psi => $MORE_INFORMATION})
 
     #Create types
-    if psi.blank?
-      x << topic_as_type({:name => self.class.to_s, :psi => get_psi, :more_info => self.more_info})
-    else
-      x << topic_as_type({:name => self.class.to_s, :psi => psi, :more_info => self.more_info})
-    end
+    x << topic_as_type({:name => self.class.to_s, :psi => psi, :more_info => self.more_info})
 
     if names.blank?
       types = []
@@ -106,7 +102,7 @@ class ActiveRecord::Base
 
         if accs_p.is_a?(Enumerable)
           accs_p.each do |acc_instance|
-            acc_types << [acc_instance.class.to_s, {:name=>acc_instance.class.to_s, :psi =>acc_instance.get_psi}]
+            acc_types << [acc_instance.class.to_s, {:name=>acc_instance.class.to_s, :psi =>acc_instance.psi}]
             acc_types << [acc_name.to_s+"_"+acc_instance.class.to_s, accs.delete_at(0)]
             acc_types << [acc_name.to_s, acc_opts]
 
@@ -116,7 +112,7 @@ class ActiveRecord::Base
           end
         else
 
-          acc_types << [accs_p.class.to_s, {:name=>accs_p.class.to_s, :psi =>accs_p.get_psi}]
+          acc_types << [accs_p.class.to_s, {:name=>accs_p.class.to_s, :psi =>accs_p.psi}]
           acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, accs.delete_at(0)]
 
           if (accs_p.default_name.blank? && !accs_p.names.blank?)
@@ -136,8 +132,6 @@ class ActiveRecord::Base
       type = type_h[0]
       attributes = type_h[1] || {}
 
-      attributes[:psi] ||= self.get_psi+"#"+type.to_s
-
       attributes[:name] ||= type.to_s
 
       x << topic_as_type(attributes) #unless self.send("#{type.to_s}").blank?
@@ -155,7 +149,7 @@ class ActiveRecord::Base
         if !acc_instance.blank?
           #x << acc_instance.topic_as_type({:name => get_name(acc_instance), :psi=>acc_instance.psi})
           stub = topic_stub(acc_instance) unless acc_instance.blank?
-          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.absolute_identifier)
+          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.abs_identifier)
           x << stub
         end
       end unless accs_p.blank?
@@ -222,7 +216,7 @@ class ActiveRecord::Base
     end unless item_identifiers.blank?
 
     if subject_identifiers.blank?
-      x << TOXTM2.locator(topic.absolute_identifier, "subjectIdentifier")
+      x << TOXTM2.locator(topic.abs_identifier, "subjectIdentifier")
     else
       subject_identifiers.each do |si|
         si_value = topic.send("#{si}")
