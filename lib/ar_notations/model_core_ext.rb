@@ -96,16 +96,31 @@ class ActiveRecord::Base
 
       acc_types << [acc_name.to_s, acc_opts] unless accs_p.blank?
 
-      if accs_p.is_a?(Enumerable)
-        accs_p.each do |acc_instance|
-          acc_types << [acc_name.to_s+"_"+acc_instance.class.to_s, accs.delete_at(0)]
-          acc_types << [acc_name.to_s, acc_opts]
-        end unless accs_p.blank?
-      else
-        acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, accs.delete_at(0)] unless accs_p.blank?
+        acc_types << [acc_name.to_s+"_association", acc_opts]
+
+        if accs_p.is_a?(Enumerable)
+          accs_p.each do |acc_instance|
+            acc_types << [acc_instance.class.to_s, {:name=>acc_instance.class.to_s, :psi =>acc_instance.get_psi}]
+            acc_types << [acc_name.to_s+"_"+acc_instance.class.to_s, accs.delete_at(0)]
+            acc_types << [acc_name.to_s, acc_opts]
+
+            if (acc_instance.default_name.blank? && !acc_instance.names.blank?)
+              acc_types << acc_instance.names.first
+            end
+          end
+        else
+
+          acc_types << [accs_p.class.to_s, {:name=>accs_p.class.to_s, :psi =>accs_p.get_psi}]
+          acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, accs.delete_at(0)]
+
+          if (accs_p.default_name.blank? && !accs_p.names.blank?)
+            acc_types << accs_p.names.first
+          end
+
+        end
+        acc_types << [acc_name.to_s+"_"+self.class.to_s, accs.delete_at(0)]
       end
 
-      acc_types << [acc_name.to_s+"_"+self.class.to_s, accs.delete_at(0)]
     end unless associations.blank?
 
     types.concat(acc_types.uniq)
@@ -115,13 +130,11 @@ class ActiveRecord::Base
       type = type_h[0]
       attributes = type_h[1] || {}
 
-      if psi.blank?
-        attributes[:psi] ||= self.get_psi+"#"+type.to_s
-      else
-        attributes[:psi] ||= self.psi+"#"+type.to_s
-      end
+      attributes[:psi] ||= self.get_psi+"#"+type.to_s
 
-      x << topic_as_type(type.to_s, attributes) #unless self.send("#{type.to_s}").blank?
+      attributes[:name] ||= type.to_s
+
+      x << topic_as_type(attributes) #unless self.send("#{type.to_s}").blank?
     end
 
     #Create assosciates Instances
@@ -134,6 +147,7 @@ class ActiveRecord::Base
 
       accs_p.each do |acc_instance|
         if !acc_instance.blank?
+          #x << acc_instance.topic_as_type({:name => get_name(acc_instance), :psi=>acc_instance.psi})
           stub = topic_stub(acc_instance) unless acc_instance.blank?
           stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.absolute_identifier)
           x << stub
@@ -167,10 +181,7 @@ class ActiveRecord::Base
     x = topic_stub
         
     names.each do |n_attr|
-      puts "n_attr.pretty_inspect" + n_attr.pretty_inspect
-      n = n_attr.at(0)
-
-      x << name_to_xtm2(n, n_attr.at(1), self)
+      x << name_to_xtm2(n_attr.at(0), n_attr.at(1), self)
     end unless names.blank?
 
     occurrences.each do |o_attr|
@@ -205,7 +216,8 @@ class ActiveRecord::Base
     end
 
     x << TOXTM2.instanceOf(topic.class.to_s)
-    x << default_name_to_xtm2(topic.default_name, topic) unless topic.default_name.blank?
+
+    x << get_name_node(topic)
 
     return x
   end
