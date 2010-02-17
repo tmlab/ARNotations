@@ -12,14 +12,14 @@ class Array
 
     #TODO
     #First we need the "more_information" occurrence
-    x << topic_as_type("more_information", :psi => $MORE_INFORMATION)
+    x << topic_as_type({:name => "more_information", :psi => $MORE_INFORMATION})
 
     #collect types
     types = {}
 
     array.each do |topic|
-      types[topic.class.to_s] = topic_as_type(topic.class.to_s, {:psi => topic.get_psi})
-      #types[topic.class.to_s] = topic_as_type(topic.class.to_s, {:psi => topic.get_psi, :more_info =>topic.more_info})
+      name = topic.get_name || topic.class.to_s
+      types[topic.class.to_s] = topic_as_type({:name => name, :psi => topic.get_psi})
     end
 
     types.each_value { |topic_type| x << topic_type }
