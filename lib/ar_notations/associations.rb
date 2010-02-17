@@ -4,10 +4,15 @@ module ARNotations
     def associations_to_xtm2(accay)
       acc_array = accay.dclone
 
-      #puts "acc_array.pretty_inspect: "+ acc_array.pretty_inspect
+      acc = acc_array.delete_at(0)      
+      acc_opts = acc_array.delete_at(0)
+      
+      acc_opts ||= {}
+        
+      acc_opts[:name] ||= acc.to_s+"_association"
 
-      acc = acc_array.delete_at(0)
-
+      acc_opts[:name].gsub!(/\W+/, '_')
+        
       assoc = self.send("#{acc}")
 
       if assoc.is_a?(Array)
@@ -25,8 +30,7 @@ module ARNotations
 
         #Assosciation
         x = REXML::Element.new 'association'
-        TOXTM2.locator(absolute_identifier.to_s+"#"+acc.to_s)
-        x << TOXTM2.type(acc.to_s)
+        x << TOXTM2.type(acc_opts[:name])
 
         #Roles
         x << association_role_to_xtm2(self, acc.to_s)
