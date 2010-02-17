@@ -195,10 +195,14 @@ class ActiveRecord::Base
       x << TOXTM2.locator(loc)
     end unless item_identifiers.blank?
 
-    subject_identifiers.each do |si|
-      si_value = topic.send("#{si}")
-      x << TOXTM2.locator(si_value, "subjectIdentifier")
-    end unless subject_identifiers.blank?
+    if subject_identifiers.blank?
+      x << TOXTM2.locator(topic.absolute_identifier, "subjectIdentifier")
+    else
+      subject_identifiers.each do |si|
+        si_value = topic.send("#{si}")
+        x << TOXTM2.locator(si_value, "subjectIdentifier")
+      end
+    end
 
     x << TOXTM2.instanceOf(topic.class.to_s)
     x << default_name_to_xtm2(topic.default_name, topic) unless topic.default_name.blank?
