@@ -24,8 +24,9 @@ module ARNotations
 
       name_attr ||= {}
 
-      name_attr[:psi] ||=name.to_s
-      x << TOXTM2.type(name_attr[:psi])
+      name_attr[:name] ||=name.to_s
+        
+      x << TOXTM2.type(name_attr[:name])
 
       if value
         x << TOXTM2.value(value)
@@ -51,6 +52,8 @@ module ARNotations
 
     def topic_as_type(id, attributes={})
       x = REXML::Element.new('topic')
+      id = attributes[:name]
+        
       x.add_attribute('id', id)
 
       y = REXML::Element.new 'name'
