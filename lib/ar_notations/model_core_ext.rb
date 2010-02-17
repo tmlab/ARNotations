@@ -69,13 +69,13 @@ class ActiveRecord::Base
 
     #TODO
     #First we need the "more_information" occurrence
-    x << topic_as_type("more_information", :psi => $MORE_INFORMATION)
+    x << topic_as_type({:name => "more_information", :psi => $MORE_INFORMATION})
 
     #Create types
     if psi.blank?
-      x << topic_as_type(self.class.to_s, {:psi => get_psi, :more_info => self.more_info})
+      x << topic_as_type({:name => self.class.to_s, :psi => get_psi, :more_info => self.more_info})
     else
-      x << topic_as_type(self.class.to_s, {:psi => psi, :more_info => self.more_info})
+      x << topic_as_type({:name => self.class.to_s, :psi => psi, :more_info => self.more_info})
     end
 
     if names.blank?
@@ -94,7 +94,7 @@ class ActiveRecord::Base
 
       accs_p = self.send("#{acc_name}")
 
-      acc_types << [acc_name.to_s, acc_opts] unless accs_p.blank?
+      unless accs_p.blank?
 
         acc_types << [acc_name.to_s+"_association", acc_opts]
 
@@ -158,7 +158,7 @@ class ActiveRecord::Base
 
     #Create Intance
     x << topic_to_xtm2
-
+    
     associations.each do |as|
       list = associations_to_xtm2(as)
       list.each {|assoc_type| x << assoc_type } unless list.blank?
@@ -168,7 +168,7 @@ class ActiveRecord::Base
     y = REXML::Element.new('topic')
     y.add_attribute('id', "tmtopic")
     z = REXML::Element.new 'name'
-    z << TOXTM2.value(self.topic_map)
+    z << TOXTM2.value("TopicMap: " + self.topic_map)
     y << z
     x << y
 
@@ -179,7 +179,7 @@ class ActiveRecord::Base
   def topic_to_xtm2
 
     x = topic_stub
-        
+
     names.each do |n_attr|
       x << name_to_xtm2(n_attr.at(0), n_attr.at(1), self)
     end unless names.blank?
@@ -200,7 +200,8 @@ class ActiveRecord::Base
   def topic_stub(topic = self)
     x = REXML::Element.new('topic')
     x.add_attribute('id', topic.identifier)
-
+ 
+    
     item_identifiers.each do |ii|
       loc = topic.send("#{ii}")
       x << TOXTM2.locator(loc)
@@ -214,9 +215,9 @@ class ActiveRecord::Base
         x << TOXTM2.locator(si_value, "subjectIdentifier")
       end
     end
-
+    
     x << TOXTM2.instanceOf(topic.class.to_s)
-
+    
     x << get_name_node(topic)
 
     return x

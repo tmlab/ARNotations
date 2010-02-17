@@ -33,21 +33,27 @@ module ARNotations
         x << TOXTM2.type(acc_opts[:name])
 
         #Roles
-        x << association_role_to_xtm2(self, acc.to_s)
-        x << association_role_to_xtm2(acc_instance, acc.to_s)
+        acc_opts_self = acc_array.delete_at(0)
+        acc_opts_self ||= {}
+        acc_opts_self[:name] ||= acc.to_s+"_"+self.class.to_s 
+          
+        acc_opts_other = acc_array.delete_at(0)
+        acc_opts_other ||= {}
+        acc_opts_other[:name] ||= acc.to_s+"_"+acc_instance.class.to_s
+            
+        x << association_role_to_xtm2(self, acc_opts_self)
+        x << association_role_to_xtm2(acc_instance, acc_opts_other)
         associations << x
       end
 
       return associations
     end
 
-    def association_role_to_xtm2(acc_role_object, acc)
+    def association_role_to_xtm2(acc_role_object, acc_arno)
       x = REXML::Element.new 'role'
-
-      #x << TOXTM2.locator(acc_role_loc)
-      x << TOXTM2.type(acc+"_"+acc_role_object.class.to_s)
+      
+      x << TOXTM2.type(acc_arno[:name].gsub(/\W+/, '_'))
       x << TOXTM2.to_xtm2_ref(acc_role_object.identifier)
-      #puts "acc_role_object.absolute_identifier: " + acc_role_object.absolute_identifier
 
       return x
     end
