@@ -1,5 +1,7 @@
 module ARNotations
   module Associations
+    include LibXML
+    
     # returns the XTM 2.0 representation of this association as an REXML::Element
     def associations_to_xtm2(accay)
       acc_array = accay.dclone

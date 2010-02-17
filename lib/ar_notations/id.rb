@@ -1,5 +1,7 @@
 module ARNotations
   module Id
+    include LibXML
+    
     def self.absolute_identifier
 
       if self.respond_to? :url_to

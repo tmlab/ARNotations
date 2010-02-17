@@ -1,5 +1,7 @@
 module ARNotations
   module Characteristics
+    include LibXML
+    
     def default_name_to_xtm2(name, topic=self)
       value = topic.send "#{name}"
 
