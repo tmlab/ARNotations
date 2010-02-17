@@ -64,8 +64,14 @@ class ActiveRecord::Base
 
   def to_xtm2
 
+    dtd = XML::Dtd.new("topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd")
+
     doc = TOXTM2::xml_doc
-    x = doc.add_element 'topicMap', {'xmlns' => 'http://www.topicmaps.org/xtm/', 'version' => '2.0', 'reifier' => "#tmtopic"}
+    x = XML::Node.new('topicMap')
+    x['xmlns'] = 'http://www.topicmaps.org/xtm/'
+    x['version'] = '2.0'
+    x['reifier'] = "#tmtopic"
+    doc.root = x
 
     #TODO
     #First we need the "more_information" occurrence
@@ -158,21 +164,30 @@ class ActiveRecord::Base
 
     #Create Intance
     x << topic_to_xtm2
-    
+
     associations.each do |as|
       list = associations_to_xtm2(as)
       list.each {|assoc_type| x << assoc_type } unless list.blank?
     end unless associations.blank?
 
     #Create TopicMap ID Reification
-    y = REXML::Element.new('topic')
-    y.add_attribute('id', "tmtopic")
-    z = REXML::Element.new 'name'
+    y = XML::Node.new('topic')
+    y['id'] = "tmtopic"
+
+    z = XML::Node.new 'name'
     z << TOXTM2.value("TopicMap: " + self.topic_map)
     y << z
     x << y
 
+    #TODO
+    #    if doc.validate(dtd)
+    #     return doc
+    #  else
+    #   return nil
+    #    end
+
     return doc
+
   end
 
   # returns the XTM 2.0 representation of this topic as an REXML::Element
@@ -198,10 +213,9 @@ class ActiveRecord::Base
   end
 
   def topic_stub(topic = self)
-    x = REXML::Element.new('topic')
-    x.add_attribute('id', topic.identifier)
- 
-    
+    x = XML::Node.new('topic')
+    x['id'] = topic.identifier
+
     item_identifiers.each do |ii|
       loc = topic.send("#{ii}")
       x << TOXTM2.locator(loc)
@@ -215,9 +229,9 @@ class ActiveRecord::Base
         x << TOXTM2.locator(si_value, "subjectIdentifier")
       end
     end
-    
+
     x << TOXTM2.instanceOf(topic.class.to_s)
-    
+
     x << get_name_node(topic)
 
     return x

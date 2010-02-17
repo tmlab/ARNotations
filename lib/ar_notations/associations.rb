@@ -29,7 +29,7 @@ module ARNotations
       acc_instances.each do |acc_instance|
 
         #Assosciation
-        x = REXML::Element.new 'association'
+        x = XML::Node.new 'association'
         x << TOXTM2.type(acc_opts[:name])
 
         #Roles
@@ -50,7 +50,7 @@ module ARNotations
     end
 
     def association_role_to_xtm2(acc_role_object, acc_arno)
-      x = REXML::Element.new 'role'
+      x = XML::Node.new 'role'
       
       x << TOXTM2.type(acc_arno[:name].gsub(/\W+/, '_'))
       x << TOXTM2.to_xtm2_ref(acc_role_object.identifier)

@@ -3,7 +3,7 @@ module ARNotations
     def default_name_to_xtm2(name, topic=self)
       value = topic.send "#{name}"
 
-      x = REXML::Element.new 'name'
+      x = XML::Node.new 'name'
       #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
 
       if value
@@ -19,7 +19,7 @@ module ARNotations
 
       value = topic.send "#{name}"
 
-      x = REXML::Element.new 'name'
+      x = XML::Node.new 'name'
       #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
 
       name_attr ||= {}
@@ -38,7 +38,7 @@ module ARNotations
 
     def occurrence_to_xtm2(occ, occ_attr= {}, value = self.send("#{occ}"))
 
-      x = REXML::Element.new 'occurrence'
+      x = XML::Node.new 'occurrence'
 
       #x << TOXTM2.locator(absolute_identifier.to_s+"#"+occ.to_s)
 
@@ -51,14 +51,14 @@ module ARNotations
     end
 
     def topic_as_type(attributes={})
-      x = REXML::Element.new('topic')
+      x = XML::Node.new('topic')
       id = attributes[:name]
         
-      x.add_attribute('id', id.gsub(/\W+/,'_'))
+      x['id'] = id.gsub(/\W+/,'_')
       
       x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
         
-      y = REXML::Element.new 'name'
+      y = XML::Node.new 'name'
       y << TOXTM2.value(id)
       x << y
       
