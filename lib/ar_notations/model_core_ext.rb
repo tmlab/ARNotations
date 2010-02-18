@@ -97,24 +97,29 @@ class ActiveRecord::Base
       accs_p = self.send("#{acc_name}")
 
       unless accs_p.blank?
-
-        acc_types << [acc_name.to_s+"_association", acc_opts]
-
+        #Assosciation
+        acc_types << [acc_name.to_s, acc_opts]
+        
         if accs_p.is_a?(Enumerable)
-          accs_p.each do |acc_instance|
-            acc_types << [acc_instance.class.to_s, {:name=>acc_instance.class.to_s, :psi =>acc_instance.psi}]
-            acc_types << [acc_name.to_s+"_"+acc_instance.class.to_s, accs.delete_at(0)]
-            acc_types << [acc_name.to_s, acc_opts]
-
-            if (acc_instance.default_name.blank? && !acc_instance.names.blank?)
-              acc_types << acc_instance.names.first
-            end
+          #Role
+          acc_types << [acc_name.to_s+"_"+accs_p.first.class.to_s, accs.delete_at(0)]
+           
+          #Player
+          acc_types << [accs_p.first.class.to_s, {:psi => accs_p.first.psi, :name => accs_p.first.class.to_s}]
+           
+          #Name
+          if (accs_p.first.default_name.blank? && !accs_p.first.names.blank?)
+            acc_types << accs_p.first.names.first 
           end
+          
         else
-
-          acc_types << [accs_p.class.to_s, {:name=>accs_p.class.to_s, :psi =>accs_p.psi}]
+          #Role
           acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, accs.delete_at(0)]
 
+          #Player
+          acc_types << [accs_p.class.to_s, {:psi => accs_p.psi, :name => accs_p.class.to_s}]
+          
+          #Name
           if (accs_p.default_name.blank? && !accs_p.names.blank?)
             acc_types << accs_p.names.first
           end
@@ -124,11 +129,12 @@ class ActiveRecord::Base
       end
 
     end unless associations.blank?
-
+    
     types.concat(acc_types.uniq)
 
     types.each do |type_h|
-
+      
+      
       type = type_h[0]
       attributes = type_h[1] || {}
 

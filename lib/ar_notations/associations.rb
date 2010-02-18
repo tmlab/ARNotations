@@ -5,7 +5,7 @@ module ARNotations
     # returns the XTM 2.0 representation of this association as an REXML::Element
     def associations_to_xtm2(accay)
       acc_array = accay.dclone
-
+  
       acc = acc_array.delete_at(0)      
       acc_opts = acc_array.delete_at(0)
       
@@ -27,24 +27,26 @@ module ARNotations
       associations = []
 
       acc_instances.delete_if { |x| x.blank? }
+               
+      acc_opts_other = acc_array.delete_at(0)
+      acc_opts_other ||= {}
+        
+      acc_opts_self = acc_array.delete_at(0)
+      acc_opts_self ||= {}
 
+        
       acc_instances.each do |acc_instance|
-
+        
         #Assosciation
         x = XML::Node.new 'association'
         x << TOXTM2.type(acc_opts[:name])
 
         #Roles
-        acc_opts_self = acc_array.delete_at(0)
-        acc_opts_self ||= {}
-        acc_opts_self[:name] ||= acc.to_s+"_"+self.class.to_s 
-          
-        acc_opts_other = acc_array.delete_at(0)
-        acc_opts_other ||= {}
         acc_opts_other[:name] ||= acc.to_s+"_"+acc_instance.class.to_s
-            
-        x << association_role_to_xtm2(self, acc_opts_self)
+        acc_opts_self[:name] ||= acc.to_s+"_"+self.class.to_s
+                    
         x << association_role_to_xtm2(acc_instance, acc_opts_other)
+        x << association_role_to_xtm2(self, acc_opts_self)
         associations << x
       end
 
@@ -52,6 +54,7 @@ module ARNotations
     end
 
     def association_role_to_xtm2(acc_role_object, acc_arno)
+      
       x = XML::Node.new 'role'
       
       x << TOXTM2.type(acc_arno[:name].gsub(/\W+/, '_'))
