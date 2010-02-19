@@ -7,7 +7,7 @@ module ARNotations
 
       if name_attr && name_attr[:scope]
         y = XML::Node.new 'scope'
-        y << TOXTM2.to_xtm2_ref(name_attr[:scope])
+        y << TOXTM2.to_xtm2_ref(name_attr[:scope].gsub(/\W+/, '_'))
         x << y
       end
 
@@ -32,7 +32,7 @@ module ARNotations
 
       if name_attr && name_attr[:scope]
         y = XML::Node.new 'scope'
-        y << TOXTM2.to_xtm2_ref(name_attr[:scope])
+        y << TOXTM2.to_xtm2_ref(name_attr[:scope].gsub(/\W+/, '_'))
         x << y
       end
 
