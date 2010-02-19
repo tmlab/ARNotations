@@ -70,9 +70,8 @@ module ARNotations
         attributes[:scope].each do |scope|
           x << default_name_to_xtm2(scope, {:scope => scope})
         end
-      else
-        x << default_name_to_xtm2(id)
       end
+      x << default_name_to_xtm2(id)
 
       x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info])  unless attributes[:more_info].blank?
 
