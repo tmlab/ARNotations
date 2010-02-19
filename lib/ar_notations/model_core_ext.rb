@@ -106,7 +106,7 @@ class ActiveRecord::Base
           acc_types << [acc_name.to_s+"_"+accs_p.first.class.to_s, role_options]
 
           #Scoped names
-          scopes << role_options[:name].gsub(/\W+/, '_')
+          scopes << role_options[:name]
 
           #Player
           acc_types << [accs_p.first.class.to_s, {:psi => accs_p.first.psi, :name => accs_p.first.class.to_s}]
@@ -122,7 +122,7 @@ class ActiveRecord::Base
           acc_types << [acc_name.to_s+"_"+accs_p.class.to_s,role_options]
 
           #Scoped names
-          scopes << role_options[:name].gsub(/\W+/, '_')
+          scopes << role_options[:name]
 
           #Player
           acc_types << [accs_p.class.to_s, {:psi => accs_p.psi, :name => accs_p.class.to_s}]
@@ -136,7 +136,7 @@ class ActiveRecord::Base
         #Role self
         self_opts = accs.delete_at(0)
         acc_types << [acc_name.to_s+"_"+self.class.to_s, self_opts]
-        scopes << self_opts[:name].gsub(/\W+/, '_')
+        scopes << self_opts[:name]
         
         #Assosciation
         
