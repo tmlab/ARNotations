@@ -1,12 +1,15 @@
 module ARNotations
   module Characteristics
     include LibXML
-    
-    def default_name_to_xtm2(name, topic=self)
-      value = topic.send "#{name}"
+    def default_name_to_xtm2(value=send("#{name}"), name_attr={})
 
       x = XML::Node.new 'name'
-      #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
+
+      if name_attr && name_attr[:scope]
+        y = XML::Node.new 'scope'
+        y << TOXTM2.to_xtm2_ref(name_attr[:scope])
+        x << y
+      end
 
       if value
         x << TOXTM2.value(value)
@@ -17,18 +20,21 @@ module ARNotations
 
     end
 
-    def name_to_xtm2(name, name_attr={}, topic=self)
-
-      value = topic.send "#{name}"
+    def name_to_xtm2(name, name_attr={}, value=send("#{name}"))
 
       x = XML::Node.new 'name'
-      #x << TOXTM2.locator(absolute_identifier.to_s+"#"+name.to_s)
 
       name_attr ||= {}
 
       name_attr[:name] ||=name.to_s
-        
+
       x << TOXTM2.type(name_attr[:name].gsub(/\W+/, '_'))
+
+      if name_attr && name_attr[:scope]
+        y = XML::Node.new 'scope'
+        y << TOXTM2.to_xtm2_ref(name_attr[:scope])
+        x << y
+      end
 
       if value
         x << TOXTM2.value(value)
@@ -55,15 +61,19 @@ module ARNotations
     def topic_as_type(attributes={})
       x = XML::Node.new('topic')
       id = attributes[:name]
-        
+
       x['id'] = id.gsub(/\W+/,'_')
-      
+
       x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
-        
-      y = XML::Node.new 'name'
-      y << TOXTM2.value(id)
-      x << y
-      
+
+      if not attributes[:scope].blank?
+        attributes[:scope].each do |scope|
+          x << default_name_to_xtm2(scope, {:scope => scope})
+        end
+      else
+        x << default_name_to_xtm2(id)
+      end
+
       x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info])  unless attributes[:more_info].blank?
 
       return x

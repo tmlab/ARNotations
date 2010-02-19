@@ -96,44 +96,62 @@ class ActiveRecord::Base
 
       accs_p = self.send("#{acc_name}")
 
+      scopes = []
+
       unless accs_p.blank?
-        #Assosciation
-        acc_types << [acc_name.to_s, acc_opts]
-        
+
         if accs_p.is_a?(Enumerable)
           #Role
-          acc_types << [acc_name.to_s+"_"+accs_p.first.class.to_s, accs.delete_at(0)]
-           
+          role_options = accs.delete_at(0)
+          acc_types << [acc_name.to_s+"_"+accs_p.first.class.to_s, role_options]
+
+          #Scoped names
+          scopes << role_options[:name].gsub(/\W+/, '_')
+
           #Player
           acc_types << [accs_p.first.class.to_s, {:psi => accs_p.first.psi, :name => accs_p.first.class.to_s}]
-           
-          #Name
+
+          #Nametypes of players
           if (accs_p.first.default_name.blank? && !accs_p.first.names.blank?)
-            acc_types << accs_p.first.names.first 
+            acc_types << accs_p.first.names.first
           end
-          
+
         else
           #Role
-          acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, accs.delete_at(0)]
+          role_options = accs.delete_at(0)
+          acc_types << [acc_name.to_s+"_"+accs_p.class.to_s,role_options]
+
+          #Scoped names
+          scopes << role_options[:name].gsub(/\W+/, '_')
 
           #Player
           acc_types << [accs_p.class.to_s, {:psi => accs_p.psi, :name => accs_p.class.to_s}]
-          
-          #Name
+
+          #Nametypes of players
           if (accs_p.default_name.blank? && !accs_p.names.blank?)
             acc_types << accs_p.names.first
           end
 
         end
-        acc_types << [acc_name.to_s+"_"+self.class.to_s, accs.delete_at(0)]
+        #Role self
+        self_opts = accs.delete_at(0)
+        acc_types << [acc_name.to_s+"_"+self.class.to_s, self_opts]
+        scopes << self_opts[:name].gsub(/\W+/, '_')
+        
+        #Assosciation
+        
+        acc_opts[:scope] = scopes.uniq
+          
+        acc_types << [acc_name.to_s, acc_opts]
+
+        
       end
 
     end unless associations.blank?
-    
+
     types.concat(acc_types.uniq)
 
     types.each do |type_h|
-      
       
       type = type_h[0]
       attributes = type_h[1] || {}
@@ -198,7 +216,7 @@ class ActiveRecord::Base
     x = topic_stub
 
     names.each do |n_attr|
-      x << name_to_xtm2(n_attr.at(0), n_attr.at(1), self)
+      x << name_to_xtm2(n_attr.at(0), n_attr.at(1))
     end unless names.blank?
 
     occurrences.each do |o_attr|
