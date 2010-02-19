@@ -40,7 +40,7 @@ class Array
     end
 
     #Create TopicMap ID Reification
-    if not self.topic_map.blank?
+    if not array.first.topic_map.blank?
       y = XML::Node.new('topic')
       y['id'] = "tmtopic"
       z = XML::Node.new 'name'
