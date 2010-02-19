@@ -171,13 +171,15 @@ class ActiveRecord::Base
     end unless associations.blank?
 
     #Create TopicMap ID Reification
-    y = XML::Node.new('topic')
-    y['id'] = "tmtopic"
+    if not self.topic_map.blank?
+      y = XML::Node.new('topic')
+      y['id'] = "tmtopic"
 
-    z = XML::Node.new 'name'
-    z << TOXTM2.value("TopicMap: " + self.topic_map)
-    y << z
-    x << y
+      z = XML::Node.new 'name'
+      z << TOXTM2.value("TopicMap: " + self.topic_map)
+      y << z
+      x << y
+    end
 
     #TODO
     #    if doc.validate(dtd)

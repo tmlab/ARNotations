@@ -2,8 +2,7 @@ require 'libxml'
 
 class Array
   include TOXTM2
-  include ARNotations::Characteristics  
-
+  include ARNotations::Characteristics
   def array_to_xtm2(array)
 
     if array.blank?
@@ -41,13 +40,15 @@ class Array
     end
 
     #Create TopicMap ID Reification
-    y = XML::Node.new('topic')
-    y['id'] = "tmtopic"
-    z = XML::Node.new 'name'
-    z << TOXTM2.value("TopicMap: " + array.first.topic_map)
-    y << z
-    x << y
-
+    if not self.topic_map.blank?
+      y = XML::Node.new('topic')
+      y['id'] = "tmtopic"
+      z = XML::Node.new 'name'
+      z << TOXTM2.value("TopicMap: " + array.first.topic_map)
+      y << z
+      x << y
+    end
+    
     #TODO
     #    if doc.validate(dtd)
     #     return doc
