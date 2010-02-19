@@ -1,7 +1,7 @@
 module ARNotations
   module Characteristics
     include LibXML
-    def default_name_to_xtm2(value=send("#{name}"), name_attr={})
+    def default_name_to_xtm2(value, name_attr={})
 
       x = XML::Node.new 'name'
 
@@ -20,13 +20,13 @@ module ARNotations
 
     end
 
-    def name_to_xtm2(name, name_attr={}, value=send("#{name}"))
+    def name_to_xtm2(type, value, name_attr={})
 
       x = XML::Node.new 'name'
 
       name_attr ||= {}
 
-      name_attr[:name] ||=name.to_s
+      name_attr[:name] ||= type.to_s
 
       x << TOXTM2.type(name_attr[:name].gsub(/\W+/, '_'))
 

@@ -216,7 +216,7 @@ class ActiveRecord::Base
     x = topic_stub
 
     names.each do |n_attr|
-      x << name_to_xtm2(n_attr.at(0), n_attr.at(1))
+      x << name_to_xtm2(n_attr.at(0), self.send("#{n_attr.at(0)}"), n_attr.at(1))
     end unless names.blank?
 
     occurrences.each do |o_attr|

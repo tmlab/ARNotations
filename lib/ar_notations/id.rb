@@ -27,10 +27,10 @@ module ARNotations
           name << TOXTM2.value(topic.identifier)
         else
           n_attr = topic.names.first
-          name = name_to_xtm2(n_attr.at(0), n_attr.at(1), topic)
+          name = name_to_xtm2(n_attr.at(0), topic.send("#{n_attr.at(0)}"), n_attr.at(1))
         end
       else
-        name = default_name_to_xtm2(topic.default_name, topic)
+        name = default_name_to_xtm2(topic.send("#{topic.default_name}"))
       end
 
       return name
