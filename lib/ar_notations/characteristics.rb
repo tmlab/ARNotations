@@ -13,10 +13,10 @@ module ARNotations
 
       if value
         x << TOXTM2.value(value)
-
+        return x
+      else
+        return nil
       end
-
-      return x
 
     end
 
@@ -38,10 +38,11 @@ module ARNotations
 
       if value
         x << TOXTM2.value(value)
-
+        return x
+      else
+        return nil
       end
-
-      return x
+      
     end
 
     def occurrence_to_xtm2(occ, occ_attr= {}, value = self.send("#{occ}"))

@@ -9,9 +9,10 @@ class Array
       return
     end
 
-    #dtd = XML::Dtd.new("topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd")
-
+    dtd_file = File.open(File.dirname(__FILE__)+'/xtm2.dtd', 'r')
+    dtd = XML::Dtd.new(dtd_file.readlines.join)
     doc = TOXTM2::xml_doc
+
     x = XML::Node.new('topicMap')
     x['xmlns'] = 'http://www.topicmaps.org/xtm/'
     x['version'] = '2.0'
@@ -48,13 +49,12 @@ class Array
       y << z
       x << y
     end
-    
-    #TODO
-    #    if doc.validate(dtd)
-    #     return doc
-    #  else
-    #   return nil
-    #    end
+
+    if doc.validate(dtd)
+      return doc
+    else
+      return nil
+    end
 
     return doc
   end

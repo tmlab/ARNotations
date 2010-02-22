@@ -64,9 +64,10 @@ class ActiveRecord::Base
 
   def to_xtm2
 
-    #dtd = XML::Dtd.new("topicMap PUBLIC", '\'-//TopicMaps.Org//DTD XML Topic Maps (XTM) 2.0//EN\'', "http://www.isotopicmaps.org/sam/sam-xtm/xtm.dtd")
-
+    dtd_file = File.open(File.dirname(__FILE__)+'/xtm2.dtd', 'r')    
+    dtd = XML::Dtd.new(dtd_file.readlines.join)
     doc = TOXTM2::xml_doc
+
     x = XML::Node.new('topicMap')
     x['xmlns'] = 'http://www.topicmaps.org/xtm/'
     x['version'] = '2.0'
@@ -91,6 +92,8 @@ class ActiveRecord::Base
     acc_types = []
 
     associations.dclone.each do |accs|
+      puts "accs.pretty_inspect: " + accs.pretty_inspect
+
       acc_name = accs.delete_at(0)
       acc_opts = accs.delete_at(0)
 
@@ -98,7 +101,9 @@ class ActiveRecord::Base
 
       scopes = []
 
-      unless accs_p.blank?
+      if accs_p.blank?
+        puts "Keine Instanzen von: " + acc_name.to_s
+      else
 
         if accs_p.is_a?(Enumerable)
           #Role
@@ -137,14 +142,13 @@ class ActiveRecord::Base
         self_opts = accs.delete_at(0)
         acc_types << [acc_name.to_s+"_"+self.class.to_s, self_opts]
         scopes << self_opts[:name]
-        
+
         #Assosciation
-        
+
         acc_opts[:scope] = scopes.uniq
-          
+
         acc_types << [acc_name.to_s, acc_opts]
 
-        
       end
 
     end unless associations.blank?
@@ -152,7 +156,9 @@ class ActiveRecord::Base
     types.concat(acc_types.uniq)
 
     types.each do |type_h|
-      
+
+      puts "type_h.pretty_inspect: " +type_h.pretty_inspect
+
       type = type_h[0]
       attributes = type_h[1] || {}
 
@@ -199,12 +205,11 @@ class ActiveRecord::Base
       x << y
     end
 
-    #TODO
-    #    if doc.validate(dtd)
-    #     return doc
-    #  else
-    #   return nil
-    #    end
+    if doc.validate(dtd)
+      return doc
+    else
+      return nil
+    end
 
     return doc
 
