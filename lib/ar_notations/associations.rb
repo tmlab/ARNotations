@@ -3,8 +3,9 @@ module ARNotations
     include LibXML
     
     # returns the XTM 2.0 representation of this association as an REXML::Element
-    def associations_to_xtm2(acc_array)
- 
+    def associations_to_xtm2(acc_array_orig)
+      acc_array = acc_array_orig.dclone
+      
       acc = acc_array.delete_at(0)      
       acc_opts = acc_array.delete_at(0)
       

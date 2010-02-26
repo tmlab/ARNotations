@@ -93,7 +93,8 @@ class ActiveRecord::Base
 
     acc_types = []
 
-    associations.dclone.each do |accs|
+    associations.dclone.each do |accs_orig|
+      accs = accs_orig.dclone
       puts "accs.pretty_inspect: " + accs.pretty_inspect
 
       acc_name = accs.delete_at(0)
@@ -172,7 +173,7 @@ class ActiveRecord::Base
     #Create assosciates Instances
     associations.dclone.each do |accs|
 
-      acc_name = accs.delete_at(0)
+      acc_name = accs.dclone.delete_at(0)
       accs_p = self.send("#{acc_name}")
 
       accs_p = [accs_p] unless accs_p.is_a? Array
@@ -207,6 +208,8 @@ class ActiveRecord::Base
       x << y
     end
 
+    logger.info doc.pretty_inspect
+    
     begin
       doc.validate_schema(schema)
     rescue LibXML::XML::Error
@@ -227,7 +230,7 @@ class ActiveRecord::Base
 
     occurrences.each do |o_attr|
       if o.is_a? :Hash
-        o = o_attr.delete(:attribute)
+        o = o_attr.dclone.delete(:attribute)
       else
         o = o_attr
       end
