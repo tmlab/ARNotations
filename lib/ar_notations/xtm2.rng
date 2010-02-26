@@ -1,0 +1,70 @@
+# ===========================================================================
+#
+# XML Topic Maps 2.0
+#
+# This is the normative RELAX-NG schema for the XTM 2.0 syntax, as
+# defined in ISO 13250-3.
+#
+# See http://www.isotopicmaps.org/sam/sam-xtm/
+#
+# ===========================================================================
+
+# --- Common declarations
+
+default namespace = "http://www.topicmaps.org/xtm/"
+namespace xtm = "http://www.topicmaps.org/xtm/"
+
+datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
+
+start = topicMap
+
+reifiable = attribute reifier { xsd:anyURI }?, itemIdentity*
+href = attribute href { xsd:anyURI }
+
+any-markup = (text | element * - xtm:* { attribute * { text }*, any-markup* })*
+
+
+# --- The schema
+
+topicMap = element topicMap { reifiable, version, mergeMap*,
+                              (topic | association)* }
+
+version = attribute version { "2.0" }
+
+topic = element topic { id, 
+                        (itemIdentity | subjectLocator | subjectIdentifier)*,
+                        instanceOf?, (name | occurrence)* }
+id = attribute id { xsd:ID }
+
+name = element name { reifiable, type?, scope?, value, variant* }
+
+value = element value { text }
+
+variant = element variant { reifiable, scope, (resourceRef | resourceData) }
+
+scope = element scope { topicRef+ }
+
+instanceOf = element instanceOf { topicRef+ }
+
+type = element type { topicRef }
+
+occurrence = element occurrence { reifiable,
+  type, scope?, ( resourceRef | resourceData ) }
+
+datatype = attribute datatype { xsd:anyURI }
+
+resourceData = element resourceData { datatype?, any-markup }
+
+association = element association { reifiable, type, scope?, role+ }
+
+role = element role { reifiable, type, topicRef }
+
+topicRef = element topicRef { href }
+resourceRef = element resourceRef { href }
+subjectLocator = element subjectLocator { href }
+subjectIdentifier = element subjectIdentifier { href }
+itemIdentity = element itemIdentity { href }
+
+mergeMap = element mergeMap { href }
+
+# --- End of schema

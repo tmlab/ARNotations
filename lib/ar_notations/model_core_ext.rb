@@ -13,6 +13,7 @@ class ActiveRecord::Base
   class_inheritable_accessor :psi
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
+  
   def self.has_more_info(more_info)
 
     self.more_info = more_info
@@ -64,8 +65,9 @@ class ActiveRecord::Base
 
   def to_xtm2
 
-    dtd_file = File.open(File.dirname(__FILE__)+'/xtm2.dtd', 'r')    
-    dtd = XML::Dtd.new(dtd_file.readlines.join)
+    schema_file = XML::Document.file(File.dirname(__FILE__)+'/xtm2.xsd')
+    schema =  XML::Schema.document(schema_file)
+
     doc = TOXTM2::xml_doc
 
     x = XML::Node.new('topicMap')
@@ -205,12 +207,11 @@ class ActiveRecord::Base
       x << y
     end
 
-    if doc.validate(dtd)
-      return doc
-    else
-      return nil
+    begin
+      doc.validate_schema(schema)
+    rescue LibXML::XML::Error
+      puts "XML Error: " + doc.to_s
     end
-
     return doc
 
   end
