@@ -4,7 +4,7 @@
 require 'arnotations_controller'
 
 #Register XTM2 Format
-Mime::Type.register "application/xtm+xml", :xtm2
+Mime::Type.register "application/xtm+xml", :xtm
 
 
 #Map any XTM2 Request to the ARNotationsController
