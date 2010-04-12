@@ -13,7 +13,6 @@ class ActiveRecord::Base
   class_inheritable_accessor :psi
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
-  
   def self.has_more_info(more_info)
 
     self.more_info = more_info
@@ -209,7 +208,7 @@ class ActiveRecord::Base
     end
 
     logger.info doc.pretty_inspect
-    
+
     begin
       doc.validate_schema(schema)
     rescue LibXML::XML::Error
@@ -229,7 +228,8 @@ class ActiveRecord::Base
     end unless names.blank?
 
     occurrences.each do |o_attr|
-      if o.is_a? :Hash
+
+      if o_attr.is_a? :Hash
         o = o_attr.dclone.delete(:attribute)
       else
         o = o_attr
