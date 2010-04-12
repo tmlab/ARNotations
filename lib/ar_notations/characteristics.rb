@@ -74,7 +74,7 @@ module ARNotations
       end
       x << default_name_to_xtm2(id)
 
-      x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info])  unless attributes[:more_info].blank?
+      x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info]+".xtm")  unless attributes[:more_info].blank?
 
       return x
     end

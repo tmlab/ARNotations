@@ -181,7 +181,7 @@ class ActiveRecord::Base
         if !acc_instance.blank?
           #x << acc_instance.topic_as_type({:name => get_name(acc_instance), :psi=>acc_instance.psi})
           stub = topic_stub(acc_instance) unless acc_instance.blank?
-          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.abs_identifier)
+          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.more_info+"/"+acc_instance.identifier+'.xtm')
           x << stub
         end
       end unless accs_p.blank?

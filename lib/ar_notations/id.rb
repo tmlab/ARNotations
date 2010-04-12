@@ -2,8 +2,8 @@ module ARNotations
   module Id
     include LibXML
     
-    def abs_identifier
-      return psi+'/'+identifier+'.xtm'
+    def abs_identifier      
+      return psi+'/'+identifier
     end
 
     def get_name(topic = self)
