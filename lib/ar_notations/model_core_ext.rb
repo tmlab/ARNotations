@@ -13,6 +13,12 @@ class ActiveRecord::Base
   class_inheritable_accessor :psi
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
+  class_inheritable_accessor :internal_identifier
+  
+  def self.has_identifier(more_info)
+    self.internal_identifier = identifier
+  end
+
   def self.has_more_info(more_info)
 
     self.more_info = more_info
@@ -181,7 +187,7 @@ class ActiveRecord::Base
         if !acc_instance.blank?
           #x << acc_instance.topic_as_type({:name => get_name(acc_instance), :psi=>acc_instance.psi})
           stub = topic_stub(acc_instance)
-          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.more_info+"/"+acc_instance.identifier+'.xtm') unless (acc_instance.more_info.blank? || acc_instance.identifier.blank?)
+          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.more_info+"/"+acc_instance.internal_identifier+'.xtm') unless (acc_instance.more_info.blank? || acc_instance.identifier.blank?)
           x << stub
         end
       end unless accs_p.blank?
