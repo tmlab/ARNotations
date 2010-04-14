@@ -14,7 +14,6 @@ class ActiveRecord::Base
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
   class_inheritable_accessor :internal_identifier
-  
   def self.has_identifier(identifier)
     self.internal_identifier = identifier
   end
@@ -187,7 +186,7 @@ class ActiveRecord::Base
         if !acc_instance.blank?
           #x << acc_instance.topic_as_type({:name => get_name(acc_instance), :psi=>acc_instance.psi})
           stub = topic_stub(acc_instance)
-          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.more_info+"/"+acc_instance.internal_identifier+'.xtm') unless (acc_instance.more_info.blank? || acc_instance.identifier.blank?)
+          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.more_info+"/"+acc_instance.send("#{internal_identifier}")+'.xtm') unless (acc_instance.more_info.blank? || acc_instance.identifier.blank?)
           x << stub
         end
       end unless accs_p.blank?
@@ -233,12 +232,11 @@ class ActiveRecord::Base
       x << name_to_xtm2(n_attr.at(0), self.send("#{n_attr.at(0)}"), n_attr.at(1))
     end unless names.blank?
 
-    occurrences.each do |o_attr|
-
-      if o_attr.is_a? :Hash
+    occurrences.each do |o_attr|      
+      if o_attr.instance_of?(:Hash)
         o = o_attr.dclone.delete(:attribute)
       else
-        o = o_attr
+       o = o_attr
       end
       x << occurrence_to_xtm2(o, o_attr)
 
