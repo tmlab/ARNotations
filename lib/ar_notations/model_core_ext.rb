@@ -15,7 +15,7 @@ class ActiveRecord::Base
   class_inheritable_accessor :more_info
   class_inheritable_accessor :internal_identifier
   
-  def self.has_identifier(more_info)
+  def self.has_identifier(identifier)
     self.internal_identifier = identifier
   end
 
