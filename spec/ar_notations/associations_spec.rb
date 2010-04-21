@@ -1,4 +1,4 @@
-require 'ar_notations_spec_helper'
+require File.dirname(__FILE__) + '/../ar_notations_spec_helper'
 
 describe ARNotations::Associations do
   
