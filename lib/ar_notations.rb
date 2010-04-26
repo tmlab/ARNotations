@@ -13,7 +13,7 @@ Mime::Type.register "application/xtm+xml", :xtm,  mime_type_synonyms = [], exten
 #end
 
 #The more information Occurrence PSI
-$MORE_INFORMATION = "http://psi.topicmapslab.de/tmbrowse/mi"
+$MORE_INFORMATION = "http://psi.topicmapslab.de/tmexplore/mi"
 
 
 #Require helper modules
