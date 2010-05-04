@@ -54,7 +54,7 @@ class Array
     begin
       doc.validate_schema(schema)
     rescue LibXML::XML::Error
-      puts "XML Error: " + doc.to_s
+      #puts "XML Error: " + doc.to_s
     end
     return doc
   end

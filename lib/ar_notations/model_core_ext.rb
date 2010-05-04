@@ -99,7 +99,7 @@ class ActiveRecord::Base
 
     associations.dclone.each do |accs_orig|
       accs = accs_orig.dclone
-      puts "accs.pretty_inspect: " + accs.pretty_inspect
+      #puts "accs.pretty_inspect: " + accs.pretty_inspect
 
       acc_name = accs.delete_at(0)
       acc_opts = accs.delete_at(0)
@@ -109,7 +109,7 @@ class ActiveRecord::Base
       scopes = []
 
       if accs_p.blank?
-        puts "Keine Instanzen von: " + acc_name.to_s
+        #puts "Keine Instanzen von: " + acc_name.to_s
       else
 
         if accs_p.is_a?(Enumerable)
@@ -164,7 +164,7 @@ class ActiveRecord::Base
 
     types.each do |type_h|
 
-      puts "type_h.pretty_inspect: " +type_h.pretty_inspect
+      #puts "type_h.pretty_inspect: " +type_h.pretty_inspect
 
       type = type_h[0]
       attributes = type_h[1] || {}
@@ -217,7 +217,7 @@ class ActiveRecord::Base
     begin
       doc.validate_schema(schema)
     rescue LibXML::XML::Error
-      puts "XML Error: " + doc.to_s
+      #puts "XML Error: " + doc.to_s
     end
     return doc
 
