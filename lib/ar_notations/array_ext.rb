@@ -51,11 +51,11 @@ class Array
       x << y
     end
 
-    begin
-      doc.validate_schema(schema)
-    rescue LibXML::XML::Error
+    #begin
+     # doc.validate_schema(schema)
+    #rescue LibXML::XML::Error
       #puts "XML Error: " + doc.to_s
-    end
+    #end
     return doc
   end
 
