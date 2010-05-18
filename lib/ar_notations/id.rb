@@ -23,7 +23,7 @@ module ARNotations
 
       if topic.default_name.blank?
         if topic.names.blank?
-          name = XML::Node.new 'name'
+          name = TOXTM2::xmlNode 'name'
           name << TOXTM2.value(topic.identifier)
         else
           n_attr = topic.names.first

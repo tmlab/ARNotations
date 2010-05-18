@@ -3,18 +3,16 @@ require 'libxml'
 class Array
   include TOXTM2
   include ARNotations::Characteristics
+  include ARNotations::XTMValidation
   def array_to_xtm2(array)
 
     if array.blank?
       return
     end
 
-    schema_file = XML::Document.file(File.dirname(__FILE__)+'/xtm2.xsd')
-    schema =  XML::Schema.document(schema_file)
-
     doc = TOXTM2::xml_doc
 
-    x = XML::Node.new('topicMap')
+    x = TOXTM2::xmlNode('topicMap')
     x['xmlns'] = 'http://www.topicmaps.org/xtm/'
     x['version'] = '2.0'
     x['reifier'] = "#tmtopic"
@@ -43,23 +41,21 @@ class Array
 
     #Create TopicMap ID Reification
     if not array.first.topic_map.blank?
-      y = XML::Node.new('topic')
+      y = TOXTM2::xmlNode('topic')
       y['id'] = "tmtopic"
-      z = XML::Node.new 'name'
+      z = TOXTM2::xmlNode 'name'
       z << TOXTM2.value("TopicMap: " + array.first.topic_map)
       y << z
       x << y
     end
 
-    #begin
-     # doc.validate_schema(schema)
-    #rescue LibXML::XML::Error
-      #puts "XML Error: " + doc.to_s
-    #end
+    validate_xtm2
+
     return doc
   end
 
   def to_xtm2
     return array_to_xtm2(self)
   end
+
 end

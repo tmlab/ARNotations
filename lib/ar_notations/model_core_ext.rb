@@ -3,6 +3,8 @@ class ActiveRecord::Base
   include ARNotations::Characteristics
   include ARNotations::Id
   include ARNotations::Associations
+  include ARNotations::XTMValidation
+  include ARNotations::FragmentMetadata
 
   class_inheritable_accessor :item_identifiers
   class_inheritable_accessor :subject_identifiers
@@ -14,67 +16,106 @@ class ActiveRecord::Base
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
   class_inheritable_accessor :internal_identifier
+  # Method to set the identifier for a topic
+  #
+  # @param[Symbol] identifier the identifier to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_identifier(identifier)
     self.internal_identifier = identifier
   end
 
+  # Method to set the more_information occurrence for a topic
+  #
+  # @param[Symbol] more_info the more_information occurrence to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_more_info(more_info)
-
     self.more_info = more_info
   end
 
+  # Method to set the psi for a topic
+  #
+  # @param[String] psi the psi to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_psi(psi)
-
     self.psi= psi
   end
 
+  # Method to set the topicmap name for a topic
+  #
+  # @param[String] topicmap the topicmap name to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_topicmap(topicmap)
-
     self.topic_map = topicmap
   end
 
+  # Method to add item identifiers for the topic
+  #
+  # @param[Array] attributes array of item identifiers to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_item_identifier(*attributes)
     self.item_identifiers ||=[]
 
     self.item_identifiers << attributes
   end
 
+  # Method to add subject identifiers for the topic
+  #
+  # @param[Array] attributes array of subject identifiers to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_subject_identifier(*attributes)
     self.subject_identifiers ||=[]
 
     self.subject_identifiers << attributes
   end
 
+  # Method to add names for the topic
+  #
+  # @param[Array] attributes array of names to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_name(*attributes)
     self.names ||=[]
 
     self.names  << attributes
   end
 
+  # Method to set a default name for the topic
+  #
+  # @param[Symbol] def_name default name to use for this topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_default_name(def_name)
     self.default_name = def_name
   end
 
+  # Method to add occurrences for the topic
+  #
+  # @param[Array] attributes array of occurrence to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_occurrence(*attributes)
     self.occurrences ||=[]
 
     self.occurrences  << attributes
   end
 
+  # Method to add associations for the topic
+  #
+  # @param[Array] attributes array of associations to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_association(*attributes)
     self.associations ||=[]
 
     self.associations  << attributes
   end
 
+  # Method to actually render a ActiveRecord::Base model
+  # as XTM 2 Topic Map Fragment
+  #
+  # @return [TOXTM2::xml_doc] returns an XTM2 fragment
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def to_xtm2
-
-    schema_file = XML::Document.file(File.dirname(__FILE__)+'/xtm2.xsd')
-    schema =  XML::Schema.document(schema_file)
 
     doc = TOXTM2::xml_doc
 
-    x = XML::Node.new('topicMap')
+    x = TOXTM2::xmlNode('topicMap')
     x['xmlns'] = 'http://www.topicmaps.org/xtm/'
     x['version'] = '2.0'
     x['reifier'] = "#tmtopic"
@@ -95,8 +136,84 @@ class ActiveRecord::Base
 
     types.concat(occurrences.dclone) unless occurrences.blank?
 
-    acc_types = []
+    acc_types = create_association_types(associations)
 
+    types.concat(acc_types.uniq)
+
+    create_types(types, x)
+
+    #Create assosciates Instances
+    create_association_instances(associations, x)
+
+    #Create Intance
+    x << topic_to_xtm2
+
+    associations.each do |as|
+      list = associations_to_xtm2(as)
+      list.each {|assoc_type| x << assoc_type } unless list.blank?
+    end unless associations.blank?
+
+    #Create TopicMap ID Reification
+    x << create_reificaton
+
+    logger.info doc.pretty_inspect
+
+    validate_xtm2
+
+    return doc
+
+  end
+
+  # returns the XTM 2.0 representation of this topic as an REXML::Element
+  def topic_to_xtm2
+
+    x = topic_stub
+
+    names.each do |n_attr|
+      x << name_to_xtm2(n_attr.at(0), self.send("#{n_attr.at(0)}"), n_attr.at(1))
+    end unless names.blank?
+
+    occurrences.each do |o_attr|
+      if o_attr.instance_of?(:Hash)
+        o = o_attr.dclone.delete(:attribute)
+      else
+        o = o_attr
+      end
+      x << occurrence_to_xtm2(o, o_attr)
+
+    end unless occurrences.blank?
+
+    return x
+  end
+
+  def topic_stub(topic = self)
+    x = TOXTM2::xmlNode('topic')
+    x['id'] = topic.identifier
+
+    item_identifiers.each do |ii|
+      loc = topic.send("#{ii}")
+      x << TOXTM2.locator(loc)
+    end unless item_identifiers.blank?
+
+    if subject_identifiers.blank?
+      x << TOXTM2.locator(topic.abs_identifier, "subjectIdentifier")
+    else
+      subject_identifiers.each do |si|
+        si_value = topic.send("#{si}")
+        x << TOXTM2.locator(si_value, "subjectIdentifier")
+      end
+    end
+
+    x << TOXTM2.instanceOf(topic.class.to_s)
+
+    x << get_name_node(topic)
+
+    return x
+  end
+
+  private
+
+  def create_association_types(associations)
     associations.dclone.each do |accs_orig|
       accs = accs_orig.dclone
       #puts "accs.pretty_inspect: " + accs.pretty_inspect
@@ -159,8 +276,9 @@ class ActiveRecord::Base
       end
 
     end unless associations.blank?
+  end
 
-    types.concat(acc_types.uniq)
+  def create_types(types, x)
 
     types.each do |type_h|
 
@@ -173,8 +291,10 @@ class ActiveRecord::Base
 
       x << topic_as_type(attributes) #unless self.send("#{type.to_s}").blank?
     end
+  end
 
-    #Create assosciates Instances
+  def create_association_instances(associations, x)
+
     associations.dclone.each do |accs|
 
       acc_name = accs.dclone.delete_at(0)
@@ -182,92 +302,20 @@ class ActiveRecord::Base
 
       accs_p = [accs_p] unless accs_p.is_a? Array
 
-      accs_p.each do |acc_instance|
-        if !acc_instance.blank?
-          #x << acc_instance.topic_as_type({:name => get_name(acc_instance), :psi=>acc_instance.psi})
-          stub = topic_stub(acc_instance)
-          stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.more_info+"/"+acc_instance.send("#{internal_identifier}")+'.xtm') unless (acc_instance.more_info.blank? || acc_instance.identifier.blank?)
-          x << stub
-        end
-      end unless accs_p.blank?
+      create_association_players(accs_p, x)
 
     end unless associations.blank?
-
-    #Create Intance
-    x << topic_to_xtm2
-
-    associations.each do |as|
-      list = associations_to_xtm2(as)
-      list.each {|assoc_type| x << assoc_type } unless list.blank?
-    end unless associations.blank?
-
-    #Create TopicMap ID Reification
-    if not self.topic_map.blank?
-      y = XML::Node.new('topic')
-      y['id'] = "tmtopic"
-
-      z = XML::Node.new 'name'
-      z << TOXTM2.value("TopicMap: " + self.topic_map)
-      y << z
-      x << y
-    end
-
-    logger.info doc.pretty_inspect
-
-#    begin
-#      doc.validate_schema(schema)
-#    rescue LibXML::XML::Error
-      #puts "XML Error: " + doc.to_s
-#    end
-    return doc
-
   end
 
-  # returns the XTM 2.0 representation of this topic as an REXML::Element
-  def topic_to_xtm2
-
-    x = topic_stub
-
-    names.each do |n_attr|
-      x << name_to_xtm2(n_attr.at(0), self.send("#{n_attr.at(0)}"), n_attr.at(1))
-    end unless names.blank?
-
-    occurrences.each do |o_attr|      
-      if o_attr.instance_of?(:Hash)
-        o = o_attr.dclone.delete(:attribute)
-      else
-       o = o_attr
+  def create_association_players(accs_p, x)
+    accs_p.each do |acc_instance|
+      if !acc_instance.blank?
+        #x << acc_instance.topic_as_type({:name => get_name(acc_instance), :psi=>acc_instance.psi})
+        stub = topic_stub(acc_instance)
+        stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, acc_instance.more_info+"/"+acc_instance.send("#{internal_identifier}")+'.xtm') unless (acc_instance.more_info.blank? || acc_instance.identifier.blank?)
+        x << stub
       end
-      x << occurrence_to_xtm2(o, o_attr)
-
-    end unless occurrences.blank?
-
-    return x
+    end unless accs_p.blank?
   end
-
-  def topic_stub(topic = self)
-    x = XML::Node.new('topic')
-    x['id'] = topic.identifier
-
-    item_identifiers.each do |ii|
-      loc = topic.send("#{ii}")
-      x << TOXTM2.locator(loc)
-    end unless item_identifiers.blank?
-
-    if subject_identifiers.blank?
-      x << TOXTM2.locator(topic.abs_identifier, "subjectIdentifier")
-    else
-      subject_identifiers.each do |si|
-        si_value = topic.send("#{si}")
-        x << TOXTM2.locator(si_value, "subjectIdentifier")
-      end
-    end
-
-    x << TOXTM2.instanceOf(topic.class.to_s)
-
-    x << get_name_node(topic)
-
-    return x
-  end
-
 end
+
