@@ -4,6 +4,7 @@ class ActiveRecord::Base
   include ARNotations::Id
   include ARNotations::Associations
   include ARNotations::XTMValidation
+  include ARNotations::FragmentMetadata
 
   class_inheritable_accessor :item_identifiers
   class_inheritable_accessor :subject_identifiers
@@ -199,16 +200,6 @@ class ActiveRecord::Base
       list.each {|assoc_type| x << assoc_type } unless list.blank?
     end unless associations.blank?
 
-    #Create TopicMap ID Reification
-    if not self.topic_map.blank?
-      y = XML::Node.new('topic')
-      y['id'] = "tmtopic"
-
-      z = XML::Node.new 'name'
-      z << TOXTM2.value("TopicMap: " + self.topic_map)
-      y << z
-      x << y
-    end
 
     logger.info doc.pretty_inspect
 
