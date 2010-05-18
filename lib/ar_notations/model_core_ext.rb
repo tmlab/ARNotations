@@ -3,6 +3,7 @@ class ActiveRecord::Base
   include ARNotations::Characteristics
   include ARNotations::Id
   include ARNotations::Associations
+  include ARNotations::XTMValidation
 
   class_inheritable_accessor :item_identifiers
   class_inheritable_accessor :subject_identifiers
@@ -68,9 +69,6 @@ class ActiveRecord::Base
   end
 
   def to_xtm2
-
-    schema_file = XML::Document.file(File.dirname(__FILE__)+'/xtm2.xsd')
-    schema =  XML::Schema.document(schema_file)
 
     doc = TOXTM2::xml_doc
 
@@ -214,11 +212,6 @@ class ActiveRecord::Base
 
     logger.info doc.pretty_inspect
 
-    begin
-      doc.validate_schema(schema)
-    rescue LibXML::XML::Error
-      #puts "XML Error: " + doc.to_s
-    end
     return doc
 
   end

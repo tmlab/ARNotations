@@ -3,14 +3,12 @@ require 'libxml'
 class Array
   include TOXTM2
   include ARNotations::Characteristics
+  include ARNotations::XTMValidation
   def array_to_xtm2(array)
 
     if array.blank?
       return
     end
-
-    schema_file = XML::Document.file(File.dirname(__FILE__)+'/xtm2.xsd')
-    schema =  XML::Schema.document(schema_file)
 
     doc = TOXTM2::xml_doc
 
@@ -51,15 +49,13 @@ class Array
       x << y
     end
 
-    begin
-      doc.validate_schema(schema)
-    rescue LibXML::XML::Error
-      #puts "XML Error: " + doc.to_s
-    end
+    validate_xtm2
+
     return doc
   end
 
   def to_xtm2
     return array_to_xtm2(self)
   end
+
 end
