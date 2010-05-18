@@ -16,59 +16,106 @@ class ActiveRecord::Base
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
   class_inheritable_accessor :internal_identifier
+  
+  
+  # Method to set the identifier for a topic
+  #
+  # @param[Symbol] identifier the identifier to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_identifier(identifier)
     self.internal_identifier = identifier
   end
 
+  # Method to set the more_information occurrence for a topic
+  #
+  # @param[Symbol] more_info the more_information occurrence to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_more_info(more_info)
 
     self.more_info = more_info
   end
 
+  # Method to set the psi for a topic
+  #
+  # @param[String] psi the psi to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_psi(psi)
 
     self.psi= psi
   end
 
+  # Method to set the topicmap name for a topic
+  #
+  # @param[String] topicmap the topicmap name to use for the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_topicmap(topicmap)
 
     self.topic_map = topicmap
   end
 
+  # Method to add item identifiers for the topic
+  #
+  # @param[Array] attributes array of item identifiers to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_item_identifier(*attributes)
     self.item_identifiers ||=[]
 
     self.item_identifiers << attributes
   end
 
+  # Method to add subject identifiers for the topic
+  #
+  # @param[Array] attributes array of subject identifiers to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_subject_identifier(*attributes)
     self.subject_identifiers ||=[]
 
     self.subject_identifiers << attributes
   end
 
+  # Method to add names for the topic
+  #
+  # @param[Array] attributes array of names to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_name(*attributes)
     self.names ||=[]
 
     self.names  << attributes
   end
 
+  # Method to set a default name for the topic
+  #
+  # @param[Symbol] def_name default name to use for this topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_default_name(def_name)
     self.default_name = def_name
   end
 
+  # Method to add occurrences for the topic
+  #
+  # @param[Array] attributes array of occurrence to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_occurrence(*attributes)
     self.occurrences ||=[]
 
     self.occurrences  << attributes
   end
 
+  # Method to add associations for the topic
+  #
+  # @param[Array] attributes array of associations to add to the topic
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_association(*attributes)
     self.associations ||=[]
 
     self.associations  << attributes
   end
 
+  # Method to actually render a ActiveRecord::Base model
+  # as XTM 2 Topic Map Fragment
+  #
+  # @return [TOXTM2::xml_doc] returns an XTM2 fragment
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def to_xtm2
 
     doc = TOXTM2::xml_doc
