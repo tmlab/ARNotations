@@ -3,10 +3,10 @@ module ARNotations
     include LibXML
     def default_name_to_xtm2(value, name_attr={})
 
-      x = XML::Node.new 'name'
+      x = TOXTM2::xmlNode 'name'
 
       if name_attr && name_attr[:scope]
-        y = XML::Node.new 'scope'
+        y = TOXTM2::xmlNode 'scope'
         y << TOXTM2.to_xtm2_ref(name_attr[:scope].gsub(/\W+/, '_'))
         x << y
       end
@@ -22,7 +22,7 @@ module ARNotations
 
     def name_to_xtm2(type, value, name_attr={})
 
-      x = XML::Node.new 'name'
+      x = TOXTM2::xmlNode 'name'
 
       name_attr ||= {}
 
@@ -31,7 +31,7 @@ module ARNotations
       x << TOXTM2.type(name_attr[:name].gsub(/\W+/, '_'))
 
       if name_attr && name_attr[:scope]
-        y = XML::Node.new 'scope'
+        y = TOXTM2::xmlNode 'scope'
         y << TOXTM2.to_xtm2_ref(name_attr[:scope].gsub(/\W+/, '_'))
         x << y
       end
@@ -47,7 +47,7 @@ module ARNotations
 
     def occurrence_to_xtm2(occ, occ_attr= {}, value = self.send("#{occ}"))
 
-      x = XML::Node.new 'occurrence'
+      x = TOXTM2::xmlNode 'occurrence'
 
       #x << TOXTM2.locator(absolute_identifier.to_s+"#"+occ.to_s)
 
@@ -60,7 +60,7 @@ module ARNotations
     end
 
     def topic_as_type(attributes={})
-      x = XML::Node.new('topic')
+      x = TOXTM2::xmlNode('topic')
       id = attributes[:name]
 
       x['id'] = id.gsub(/\W+/,'_')

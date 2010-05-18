@@ -73,7 +73,7 @@ class ActiveRecord::Base
 
     doc = TOXTM2::xml_doc
 
-    x = XML::Node.new('topicMap')
+    x = TOXTM2::xmlNode('topicMap')
     x['xmlns'] = 'http://www.topicmaps.org/xtm/'
     x['version'] = '2.0'
     x['reifier'] = "#tmtopic"

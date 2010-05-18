@@ -12,7 +12,7 @@ class Array
 
     doc = TOXTM2::xml_doc
 
-    x = XML::Node.new('topicMap')
+    x = TOXTM2::xmlNode('topicMap')
     x['xmlns'] = 'http://www.topicmaps.org/xtm/'
     x['version'] = '2.0'
     x['reifier'] = "#tmtopic"
@@ -41,9 +41,9 @@ class Array
 
     #Create TopicMap ID Reification
     if not array.first.topic_map.blank?
-      y = XML::Node.new('topic')
+      y = TOXTM2::xmlNode('topic')
       y['id'] = "tmtopic"
-      z = XML::Node.new 'name'
+      z = TOXTM2::xmlNode 'name'
       z << TOXTM2.value("TopicMap: " + array.first.topic_map)
       y << z
       x << y
