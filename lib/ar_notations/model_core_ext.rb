@@ -16,41 +16,51 @@ class ActiveRecord::Base
   class_inheritable_accessor :topic_map
   class_inheritable_accessor :more_info
   class_inheritable_accessor :internal_identifier
-  # Method to set the identifier for a topic
+  # Method to set the identifier for a topic.
+  # Multiple invocations will overwrite the identifier.
   #
-  # @param[Symbol] identifier the identifier to use for the topic
+  # @param [Symbol] identifier the identifier to use for the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_identifier(identifier)
     self.internal_identifier = identifier
   end
 
-  # Method to set the more_information occurrence for a topic
+  # Method to set the more_information occurrence for a topic.
+  # Multiple invocations will overwrite the more_information occurrence.
   #
-  # @param[Symbol] more_info the more_information occurrence to use for the topic
+  # @param [Symbol] more_info the more_information occurrence to use for the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_more_info(more_info)
     self.more_info = more_info
   end
 
-  # Method to set the psi for a topic
+  # Method to set the psi for a topic.
+  # Multiple invocations will overwrite the psi.
   #
-  # @param[String] psi the psi to use for the topic
+  # @param [String] psi the psi to use for the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_psi(psi)
     self.psi= psi
   end
 
-  # Method to set the topicmap name for a topic
+  # Method to set the topicmap name for a topic.
+  # This will be modelled as a name in a Topic reifiing the TopicMap.
+  # Multiple invocations will overwrite the topicmap name.
   #
-  # @param[String] topicmap the topicmap name to use for the topic
+  #
+  # @param [String] topicmap the topicmap name to use for the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_topicmap(topicmap)
     self.topic_map = topicmap
   end
 
-  # Method to add item identifiers for the topic
+  # Method to add item identifiers for the topic. Every invocation will
+  # add another subject identifier to the fragment.
   #
-  # @param[Array] attributes array of item identifiers to add to the topic
+  # @example
+  # has_item_identifier :identifier
+  #
+  # @param [Array<Hash<Symbol>>] attributes array of item identifiers to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_item_identifier(*attributes)
     self.item_identifiers ||=[]
@@ -58,9 +68,13 @@ class ActiveRecord::Base
     self.item_identifiers << attributes
   end
 
-  # Method to add subject identifiers for the topic
+  # Method to add subject identifiers for the topic type. Every invocation will
+  # add another subject identifier to the fragment.
   #
-  # @param[Array] attributes array of subject identifiers to add to the topic
+  # @example
+  # has_subject_identifier "http://www.topicmapslab.de/people/"
+  #
+  # @param [Array<Hash<Symbol>>] attributes array of subject identifiers to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_subject_identifier(*attributes)
     self.subject_identifiers ||=[]
@@ -68,9 +82,14 @@ class ActiveRecord::Base
     self.subject_identifiers << attributes
   end
 
-  # Method to add names for the topic
+  # Method to add names for the topic. Every invocation will add
+  # another name with the given :psi to the fragment.
   #
-  # @param[Array] attributes array of names to add to the topic
+  # @example
+  # has_name  :lastname, :psi => "http://xmlns.com/foaf/0.1/familyName"
+  # has_name  :firstname , :psi => "http://xmlns.com/foaf/0.1/givenName"
+  #
+  # @param [Array<Hash<Symbol>>] attributes array of names to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_name(*attributes)
     self.names ||=[]
@@ -78,17 +97,23 @@ class ActiveRecord::Base
     self.names  << attributes
   end
 
-  # Method to set a default name for the topic
+  # Method to set one default name for the topic.
+  # Multiple invocations will overwrite the default name.
   #
-  # @param[Symbol] def_name default name to use for this topic
+  # @param [Symbol] def_name default name to use for this topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_default_name(def_name)
     self.default_name = def_name
   end
 
-  # Method to add occurrences for the topic
+  # Method to add occurrences for the topic. Every invocation will add
+  # another occurrences with the given :psi to the fragment.
   #
-  # @param[Array] attributes array of occurrence to add to the topic
+  # @example
+  # has_occurrence :description
+  # has_occurrence :homepage
+  #
+  # @param [Array<Hash<Symbol>>] attributes array of occurrence to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_occurrence(*attributes)
     self.occurrences ||=[]
@@ -96,9 +121,25 @@ class ActiveRecord::Base
     self.occurrences  << attributes
   end
 
-  # Method to add associations for the topic
+  # Method to add associations for the topic.  Every invocation will add
+  # another associations with the given roles to the fragment.
   #
-  # @param[Array] attributes array of associations to add to the topic
+  # @example
+  # has_association :publications,
+  # {:name => "authorship", :psi => "http://psi.topicmapslab.de/tml/authorship"},
+  # {:name => "has author", :psi => "http://psi.topicmapslab.de/tml/work"},
+  # {:name => "is author of", :psi => "http://psi.topicmapslab.de/tml/author"}
+  #
+  # @note with Ruby on Rails there are only binary associations possible but
+  # you can model any arity.
+  #
+  # @example
+  # has_association :gender,
+  # {:name => "gendership", :psi => "http://psi.topicmapslab.de/tml/gendership"},
+  # {:name => "is gender of", :psi => "http://psi.topicmapslab.de/tml/gender"},
+  # {:name => "has gender", :psi => "http://psi.topicmapslab.de/tml/gender_person"}
+  #
+  # @param [Array<Hash<Symbol>>] attributes array of associations to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def self.has_association(*attributes)
     self.associations ||=[]
@@ -213,6 +254,7 @@ class ActiveRecord::Base
 
   private
 
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_association_types(associations)
     associations.dclone.each do |accs_orig|
       accs = accs_orig.dclone
@@ -278,6 +320,7 @@ class ActiveRecord::Base
     end unless associations.blank?
   end
 
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_types(types, x)
 
     types.each do |type_h|
@@ -293,6 +336,7 @@ class ActiveRecord::Base
     end
   end
 
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_association_instances(associations, x)
 
     associations.dclone.each do |accs|
@@ -307,6 +351,7 @@ class ActiveRecord::Base
     end unless associations.blank?
   end
 
+  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_association_players(accs_p, x)
     accs_p.each do |acc_instance|
       if !acc_instance.blank?
@@ -317,5 +362,6 @@ class ActiveRecord::Base
       end
     end unless accs_p.blank?
   end
+
 end
 
