@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Module: ARNotations::Characteristics</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (C)</a> &raquo; 
+    <span class='title'><a href="../ARNotations.html" title="ARNotations (module)">ARNotations</a></span>
+     &raquo; 
+    <span class="title">Characteristics</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: ARNotations::Characteristics
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+      <dt class="r1">Includes:</dt>
+      <dd class="r1">LibXML</dd>
+      
+    
+  
+  
+    <dt class="r2">Included in:</dt>
+    <dd class="r2"><a href="../ActiveRecord/Base.html" title="ActiveRecord::Base (class)">ActiveRecord::Base</a>, <a href="../Array.html" title="Array (class)">Array</a></dd>
+    
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/ar_notations/characteristics.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+
+  
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#default_name_to_xtm2-instance_method" title="#default_name_to_xtm2 (instance method)">- (Object) <strong>default_name_to_xtm2</strong>(value, name_attr = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#name_to_xtm2-instance_method" title="#name_to_xtm2 (instance method)">- (Object) <strong>name_to_xtm2</strong>(type, value, name_attr = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#occurrence_to_xtm2-instance_method" title="#occurrence_to_xtm2 (instance method)">- (Object) <strong>occurrence_to_xtm2</strong>(occ, occ_attr = {}, value = self.send(&quot;#{occ}&quot;)) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topic_as_type-instance_method" title="#topic_as_type (instance method)">- (Object) <strong>topic_as_type</strong>(attributes = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="default_name_to_xtm2-instance_method">
+  
+    - (<tt>Object</tt>) <strong>default_name_to_xtm2</strong>(value, name_attr = {}) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ar_notations/characteristics.rb', line 4</span>
+
+<span class='kw'>def</span> <span class='id default_name_to_xtm2'>default_name_to_xtm2</span><span class='lparen'>(</span><span class='id value'>value</span><span class='comma'>,</span> <span class='id name_attr'>name_attr</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+  <span class='id x'>x</span> <span class='op'>=</span> <span class='const'>TOXTM2</span><span class='op'>::</span><span class='id xmlNode'>xmlNode</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span>
+
+  <span class='kw'>if</span> <span class='id name_attr'>name_attr</span> <span class='op'>&amp;&amp;</span> <span class='id name_attr'>name_attr</span><span class='lbracket'>[</span><span class='symbol'>:scope</span><span class='rbracket'>]</span>
+    <span class='id y'>y</span> <span class='op'>=</span> <span class='const'>TOXTM2</span><span class='op'>::</span><span class='id xmlNode'>xmlNode</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>scope</span><span class='tstring_end'>'</span></span>
+    <span class='id y'>y</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id to_xtm2_ref'>to_xtm2_ref</span><span class='lparen'>(</span><span class='id name_attr'>name_attr</span><span class='lbracket'>[</span><span class='symbol'>:scope</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\W+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='id y'>y</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id value'>value</span>
+    <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id value'>value</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id x'>x</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="name_to_xtm2-instance_method">
+  
+    - (<tt>Object</tt>) <strong>name_to_xtm2</strong>(type, value, name_attr = {}) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ar_notations/characteristics.rb', line 23</span>
+
+<span class='kw'>def</span> <span class='id name_to_xtm2'>name_to_xtm2</span><span class='lparen'>(</span><span class='id type'>type</span><span class='comma'>,</span> <span class='id value'>value</span><span class='comma'>,</span> <span class='id name_attr'>name_attr</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+  <span class='id x'>x</span> <span class='op'>=</span> <span class='const'>TOXTM2</span><span class='op'>::</span><span class='id xmlNode'>xmlNode</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span>
+
+  <span class='id name_attr'>name_attr</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='id name_attr'>name_attr</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='id type'>type</span><span class='period'>.</span><span class='id to_s'>to_s</span>
+
+  <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id type'>type</span><span class='lparen'>(</span><span class='id name_attr'>name_attr</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\W+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='id name_attr'>name_attr</span> <span class='op'>&amp;&amp;</span> <span class='id name_attr'>name_attr</span><span class='lbracket'>[</span><span class='symbol'>:scope</span><span class='rbracket'>]</span>
+    <span class='id y'>y</span> <span class='op'>=</span> <span class='const'>TOXTM2</span><span class='op'>::</span><span class='id xmlNode'>xmlNode</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>scope</span><span class='tstring_end'>'</span></span>
+    <span class='id y'>y</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id to_xtm2_ref'>to_xtm2_ref</span><span class='lparen'>(</span><span class='id name_attr'>name_attr</span><span class='lbracket'>[</span><span class='symbol'>:scope</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\W+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='id y'>y</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id value'>value</span>
+    <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id value'>value</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id x'>x</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+  
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="occurrence_to_xtm2-instance_method">
+  
+    - (<tt>Object</tt>) <strong>occurrence_to_xtm2</strong>(occ, occ_attr = {}, value = self.send(&quot;#{occ}&quot;)) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ar_notations/characteristics.rb', line 48</span>
+
+<span class='kw'>def</span> <span class='id occurrence_to_xtm2'>occurrence_to_xtm2</span><span class='lparen'>(</span><span class='id occ'>occ</span><span class='comma'>,</span> <span class='id occ_attr'>occ_attr</span><span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id value'>value</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id send'>send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id occ'>occ</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+  <span class='id x'>x</span> <span class='op'>=</span> <span class='const'>TOXTM2</span><span class='op'>::</span><span class='id xmlNode'>xmlNode</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>occurrence</span><span class='tstring_end'>'</span></span>
+
+  <span class='comment'>#x &lt;&lt; TOXTM2.locator(absolute_identifier.to_s+&quot;#&quot;+occ.to_s)
+</span>
+  <span class='id occ_attr'>occ_attr</span><span class='lbracket'>[</span><span class='symbol'>:psi</span><span class='rbracket'>]</span> <span class='op'>||=</span><span class='id occ'>occ</span><span class='period'>.</span><span class='id to_s'>to_s</span>
+  <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id type'>type</span><span class='lparen'>(</span><span class='id occ_attr'>occ_attr</span><span class='lbracket'>[</span><span class='symbol'>:psi</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+
+  <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id res_data'>res_data</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id value'>value</span><span class='period'>.</span><span class='id blank?'>blank?</span>
+
+  <span class='kw'>return</span> <span class='id x'>x</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="topic_as_type-instance_method">
+  
+    - (<tt>Object</tt>) <strong>topic_as_type</strong>(attributes = {}) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ar_notations/characteristics.rb', line 62</span>
+
+<span class='kw'>def</span> <span class='id topic_as_type'>topic_as_type</span><span class='lparen'>(</span><span class='id attributes'>attributes</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id x'>x</span> <span class='op'>=</span> <span class='const'>TOXTM2</span><span class='op'>::</span><span class='id xmlNode'>xmlNode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>topic</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='id id'>id</span> <span class='op'>=</span> <span class='id attributes'>attributes</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span>
+
+  <span class='id x'>x</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>id</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id id'>id</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\W+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+
+  <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id locator'>locator</span><span class='lparen'>(</span><span class='id attributes'>attributes</span><span class='lbracket'>[</span><span class='symbol'>:psi</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>subjectIdentifier</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='kw'>not</span> <span class='id attributes'>attributes</span><span class='lbracket'>[</span><span class='symbol'>:scope</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id blank?'>blank?</span>
+    <span class='id attributes'>attributes</span><span class='lbracket'>[</span><span class='symbol'>:scope</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id scope'>scope</span><span class='op'>|</span>
+      <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='id default_name_to_xtm2'>default_name_to_xtm2</span><span class='lparen'>(</span><span class='id scope'>scope</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:scope</span> <span class='op'>=&gt;</span> <span class='id scope'>scope</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='id default_name_to_xtm2'>default_name_to_xtm2</span><span class='lparen'>(</span><span class='id id'>id</span><span class='rparen'>)</span>
+
+  <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='id occurrence_to_xtm2'>occurrence_to_xtm2</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>more_information</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:psi</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>more_information</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id attributes'>attributes</span><span class='lbracket'>[</span><span class='symbol'>:more_info</span><span class='rbracket'>]</span><span class='op'>+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>.xtm</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>  <span class='kw'>unless</span> <span class='id attributes'>attributes</span><span class='lbracket'>[</span><span class='symbol'>:more_info</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id blank?'>blank?</span>
+
+  <span class='kw'>return</span> <span class='id x'>x</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Tue Jun  8 23:53:26 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.5 (ruby-1.9.1).
+</div>
+
+  </body>
+</html>

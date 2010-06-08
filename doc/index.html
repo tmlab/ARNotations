@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Documentation by YARD 0.5.5</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html" title="Index">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><div id='filecontents'><p>
+ARNotations
+</p>
+<h6>=====</h6>
+<p>
+ARNotations is a Ruby on Rails plugin to map any kind of ActiveRecord model
+to a Topic Map Fragment, providing the ability to expose them TMExplore
+compatible using REST.
+</p>
+<p>
+Dependencies
+</p>
+<h6>=====</h6>
+<p>
+Currently ARNotations only depends on the libxml gem. Unfortunately this
+means it does currently <b>not</b> work with JRuby.
+</p>
+<p>
+Installation
+</p>
+<h6>=====</h6>
+<p>
+As stated in the dependencies section, you need to install the libxml gem
+using: e.g. by &#8220;gem install libxml&#8221; After that you can use
+mercurial to install ARNotions in your Rails application root: &#8220; hg
+clone <a
+href="https://arnotations.googlecode.com/hg">arnotations.googlecode.com/hg</a>
+vendor/plugins/ar_notations&#8221; For updates just change into
+&#8220;vendor/plugins/ar_notations&#8221; and do a quick &#8220;hg pull
+-u&#8221; For actually arnotating your Application have a look at the
+examples provided.
+</p>
+<p>
+Example
+</p>
+<h6>=</h6>
+<p>
+Some examples how to &#8220;arnotate&#8221; your model: Give some typical
+ActiveRecord class like:
+</p>
+<p>
+class Person < ActiveRecord::Base
+</p>
+<pre class="code">
+   <span class='id validates_presence_of'>validates_presence_of</span> <span class='symbol'>:firstname</span><span class='comma'>,</span> <span class='symbol'>:lastname</span><span class='comma'>,</span> <span class='symbol'>:identifier</span>
+
+   <span class='id has_and_belongs_to_many'>has_and_belongs_to_many</span> <span class='symbol'>:publications</span><span class='comma'>,</span> <span class='symbol'>:class_name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Publication</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:join_table</span> <span class='op'>=&gt;</span> <span class='symbol'>:authors_publications</span>
+
+   <span class='id translates'>translates</span> <span class='symbol'>:description</span>
+</pre>
+<p>
+end
+</p>
+<p>
+You would simply add:
+</p>
+<p>
+#..for things that should be represented as Topic Names has_name :lastname,
+:psi => &#8220;<a
+href="http://xmlns.com/foaf/0.1/familyName">xmlns.com/foaf/0.1/familyName</a>&#8220;
+has_name :firstname , :psi => &#8220;<a
+href="http://xmlns.com/foaf/0.1/givenName">xmlns.com/foaf/0.1/givenName</a>&#8220;
+</p>
+<p>
+#..for things that should be represented as Topic Occurrences
+has_occurrence :description
+</p>
+<p>
+#..for associations has_association :publications,
+</p>
+<pre class="code">
+   {:name =&gt; &quot;authorship&quot;, :psi =&gt; &quot;http://psi.topicmapslab.de/tml/authorship&quot;},
+   {:name =&gt; &quot;has author&quot;, :psi =&gt; &quot;http://psi.topicmapslab.de/tml/work&quot;},
+   {:name =&gt; &quot;is author of&quot;, :psi =&gt; &quot;http://psi.topicmapslab.de/tml/author&quot;}
+</pre>
+<p>
+to your model. In your controller e.g. the PeopleController add
+&#8220;format.xtm <tt>:xml => @person.to_xtm2</tt>&#8221; to your
+&#8220;show&#8221; Method, and &#8220;format.xtm {&#8220;render :xml =>
+@people = Person.all.to_xtm2 }&#8221; to your &#8220;index&#8221; Method,
+and given you use the default RoR routing (with &#8220;.:format&#8221;) or
+request content type &#8220;application/xtm+xml&#8221; those Methods will
+return you some nice explorable Topic Map fragments.
+</p>
+<p>
+Copyright &#169; 2010 Daniel Exner <exner@informatik.uni-leipzig.de>,
+released under the MIT license
+</p>
+</div></div>
+    
+    <div id="footer">
+  Generated on Tue Jun  8 23:53:25 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.5 (ruby-1.9.1).
+</div>
+
+  </body>
+</html>

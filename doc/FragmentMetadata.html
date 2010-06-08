@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf8" />
+<title>Module: FragmentMetadata</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (F)</a> &raquo; 
+    
+    
+    <span class="title">FragmentMetadata</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: FragmentMetadata 
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><a href="ActiveRecord/Base.html" title="ActiveRecord::Base (class)">ActiveRecord::Base</a></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/ar_notations/fragment_metadata.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+
+
+  
+    <h2>Instance Method Summary</h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_reificaton-instance_method" title="#create_reificaton (instance method)">- (Object) <strong>create_reificaton</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="create_reificaton-instance_method">
+  
+    - (<tt>Object</tt>) <strong>create_reificaton</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ar_notations/fragment_metadata.rb', line 2</span>
+
+<span class='def def kw'>def</span> <span class='create_reificaton identifier id'>create_reificaton</span>
+
+  <span class='if if kw'>if</span> <span class='not not kw'>not</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='topic_map identifier id'>topic_map</span><span class='dot token'>.</span><span class='blank? fid id'>blank?</span>
+    <span class='y identifier id'>y</span> <span class='assign token'>=</span> <span class='TOXTM2 constant id'>TOXTM2</span><span class='colon2 op'>::</span><span class='xmlNode identifier id'>xmlNode</span><span class='lparen token'>(</span><span class='string val'>'topic'</span><span class='rparen token'>)</span>
+    <span class='y identifier id'>y</span><span class='lbrack token'>[</span><span class='string val'>'id'</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='string val'>&quot;tmtopic&quot;</span>
+
+    <span class='z identifier id'>z</span> <span class='assign token'>=</span> <span class='TOXTM2 constant id'>TOXTM2</span><span class='colon2 op'>::</span><span class='xmlNode identifier id'>xmlNode</span> <span class='string val'>'name'</span>
+    <span class='z identifier id'>z</span> <span class='lshft op'>&lt;&lt;</span> <span class='TOXTM2 constant id'>TOXTM2</span><span class='dot token'>.</span><span class='value identifier id'>value</span><span class='lparen token'>(</span><span class='string val'>&quot;TopicMap: &quot;</span> <span class='plus op'>+</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='topic_map identifier id'>topic_map</span><span class='rparen token'>)</span>
+    <span class='y identifier id'>y</span> <span class='lshft op'>&lt;&lt;</span> <span class='z identifier id'>z</span>
+
+  <span class='end end kw'>end</span>
+  <span class='return return kw'>return</span> <span class='y identifier id'>y</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed May 19 23:26:33 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.4 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>
