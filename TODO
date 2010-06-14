@@ -1,0 +1,7 @@
+TODO
+===========
+
+1. Switch to tm4r
+2. Persist ARNotaions not in model but in DB
+3. Create (Web) admin interface
+4. Create Interface layer to abstract from tm4r and RTM
