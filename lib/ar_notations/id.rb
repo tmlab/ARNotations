@@ -1,8 +1,8 @@
 module ARNotations
   module Id
     include LibXML
-    
-    def abs_identifier      
+
+    def abs_identifier
       return psi+'/'+identifier
     end
 

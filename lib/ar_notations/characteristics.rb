@@ -1,6 +1,7 @@
 module ARNotations
   module Characteristics
     include LibXML
+
     def default_name_to_xtm2(value, name_attr={})
 
       x = TOXTM2::xmlNode 'name'
@@ -42,7 +43,7 @@ module ARNotations
       else
         return nil
       end
-      
+
     end
 
     def occurrence_to_xtm2(occ, occ_attr= {}, value = self.send("#{occ}"))
@@ -63,7 +64,7 @@ module ARNotations
       x = TOXTM2::xmlNode('topic')
       id = attributes[:name]
 
-      x['id'] = id.gsub(/\W+/,'_')
+      x['id'] = id.gsub(/\W+/, '_')
 
       x << TOXTM2.locator(attributes[:psi], "subjectIdentifier")
 
@@ -74,7 +75,7 @@ module ARNotations
       end
       x << default_name_to_xtm2(id)
 
-      x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info]+".xtm")  unless attributes[:more_info].blank?
+      x << occurrence_to_xtm2("more_information", {:psi => "more_information"}, attributes[:more_info]+".xtm") unless attributes[:more_info].blank?
 
       return x
     end

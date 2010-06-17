@@ -62,7 +62,7 @@ class ActiveRecord::Base
   #
   # @param [Array<Hash<Symbol>>] attributes array of item identifiers to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
-  def self.has_item_identifier(*attributes)
+  def self.has_item_identifier(* attributes)
     self.item_identifiers ||=[]
 
     self.item_identifiers << attributes
@@ -76,7 +76,7 @@ class ActiveRecord::Base
   #
   # @param [Array<Hash<Symbol>>] attributes array of subject identifiers to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
-  def self.has_subject_identifier(*attributes)
+  def self.has_subject_identifier(* attributes)
     self.subject_identifiers ||=[]
 
     self.subject_identifiers << attributes
@@ -91,10 +91,10 @@ class ActiveRecord::Base
   #
   # @param [Array<Hash<Symbol>>] attributes array of names to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
-  def self.has_name(*attributes)
+  def self.has_name(* attributes)
     self.names ||=[]
 
-    self.names  << attributes
+    self.names << attributes
   end
 
   # Method to set one default name for the topic.
@@ -115,10 +115,10 @@ class ActiveRecord::Base
   #
   # @param [Array<Hash<Symbol>>] attributes array of occurrence to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
-  def self.has_occurrence(*attributes)
+  def self.has_occurrence(* attributes)
     self.occurrences ||=[]
 
-    self.occurrences  << attributes
+    self.occurrences << attributes
   end
 
   # Method to add associations for the topic.  Every invocation will add
@@ -141,10 +141,10 @@ class ActiveRecord::Base
   #
   # @param [Array<Hash<Symbol>>] attributes array of associations to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
-  def self.has_association(*attributes)
+  def self.has_association(* attributes)
     self.associations ||=[]
 
-    self.associations  << attributes
+    self.associations << attributes
   end
 
   # Method to actually render a ActiveRecord::Base model
@@ -191,7 +191,7 @@ class ActiveRecord::Base
 
     associations.each do |as|
       list = associations_to_xtm2(as)
-      list.each {|assoc_type| x << assoc_type } unless list.blank?
+      list.each { |assoc_type| x << assoc_type } unless list.blank?
     end unless associations.blank?
 
     #Create TopicMap ID Reification
@@ -293,7 +293,7 @@ class ActiveRecord::Base
         else
           #Role
           role_options = accs.delete_at(0)
-          acc_types << [acc_name.to_s+"_"+accs_p.class.to_s,role_options]
+          acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, role_options]
 
           #Scoped names
           scopes << role_options[:name]

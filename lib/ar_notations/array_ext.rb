@@ -4,6 +4,7 @@ class Array
   include TOXTM2
   include ARNotations::Characteristics
   include ARNotations::XTMValidation
+
   def array_to_xtm2(array)
 
     if array.blank?
@@ -35,7 +36,7 @@ class Array
 
     array.each() do |topic|
       stub = topic.topic_stub
-      stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, topic.more_info+"/"+topic.send("#{topic.internal_identifier}")+'.xtm')  unless topic.more_info.blank?
+      stub << occurrence_to_xtm2("more_information", {:psi => "more_information"}, topic.more_info+"/"+topic.send("#{topic.internal_identifier}")+'.xtm') unless topic.more_info.blank?
       x << stub
     end
 
