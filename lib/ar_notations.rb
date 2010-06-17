@@ -1,7 +1,6 @@
 # ARNotations
 
 #Require the ARNotationsController
-require 'arnotations_controller'
 
 #Register XTM2 Format
 Mime::Type.register "application/xtm+xml", :xtm,  mime_type_synonyms = [], extension_synonyms = [:xtm2]
