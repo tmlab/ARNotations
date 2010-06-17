@@ -256,6 +256,9 @@ class ActiveRecord::Base
 
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_association_types(associations)
+    acc_types = []
+
+
     associations.dclone.each do |accs_orig|
       accs = accs_orig.dclone
       #puts "accs.pretty_inspect: " + accs.pretty_inspect
