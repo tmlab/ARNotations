@@ -199,7 +199,7 @@ class ActiveRecord::Base
 
     logger.info doc.pretty_inspect
 
-    validate_xtm2
+    #validate_xtm2
 
     return doc
 

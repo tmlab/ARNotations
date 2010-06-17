@@ -49,7 +49,7 @@ class Array
       x << y
     end
 
-    validate_xtm2
+    #validate_xtm2
 
     return doc
   end
