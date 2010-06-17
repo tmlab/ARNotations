@@ -3,10 +3,9 @@ require 'libxml'
 
 
 module TOXTM2  
-  include LibXML
-  
-  def self.xmlNode(*attributes)
-    return TOXTM2::xmlNode attributes
+
+  def self.xmlNode(* attributes)
+    return LibXML::XML::Node.new(attributes)
   end
   
   def self.xml_doc
