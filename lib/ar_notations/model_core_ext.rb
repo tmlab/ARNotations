@@ -197,8 +197,6 @@ class ActiveRecord::Base
     #Create TopicMap ID Reification
     x << create_reificaton
 
-    logger.info doc.pretty_inspect
-
     #validate_xtm2
 
     return doc
