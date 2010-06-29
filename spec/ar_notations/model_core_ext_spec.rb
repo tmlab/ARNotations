@@ -52,11 +52,11 @@ describe ActiveRecord::Base do
 
   end
 
-  describe "has_subject_identifier" do
+  describe "has_item_identifier" do
 
     it "allows arnotating the class attributes to use as SubjectIdentifiers for the topic" do
       Person.class_eval do
-        has_subject_identifier "http://example.zz/si"
+        has_item_identifier "http://example.zz/si"
       end
     end
 

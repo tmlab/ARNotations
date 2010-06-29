@@ -6,8 +6,8 @@ class ActiveRecord::Base
   include ARNotations::XTMValidation
   include ARNotations::FragmentMetadata
 
+  # class_inheritable_accessor :item_identifiers
   class_inheritable_accessor :item_identifiers
-  class_inheritable_accessor :subject_identifiers
   class_inheritable_accessor :names
   class_inheritable_accessor :default_name
   class_inheritable_accessor :occurrences
@@ -72,14 +72,14 @@ class ActiveRecord::Base
   # add another subject identifier to the fragment.
   #
   # @example
-  # has_subject_identifier "http://www.topicmapslab.de/people/"
+  # has_item_identifier "http://www.topicmapslab.de/people/"
   #
   # @param [Array<Hash<Symbol>>] attributes array of subject identifiers to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
-  def self.has_subject_identifier(* attributes)
-    self.subject_identifiers ||=[]
+  def self.has_item_identifier(* attributes)
+    self.item_identifiers ||=[]
 
-    self.subject_identifiers << attributes
+    self.item_identifiers << attributes
   end
 
   # Method to add names for the topic. Every invocation will add
@@ -172,14 +172,18 @@ class ActiveRecord::Base
     if names.blank?
       types = []
     else
+      # Changed 2010-06-29: from dclone to clone
       types = names.dclone
+      # types = names.clone
     end
 
     types.concat(occurrences.dclone) unless occurrences.blank?
 
     acc_types = create_association_types(associations)
 
-    types.concat(acc_types.uniq)
+    # Changed 2010-06-29: test if acc_types.nil
+    # types.concat(acc_types.uniq)
+    types.concat(acc_types.uniq) if not acc_types.nil?
 
     create_types(types, x)
 
@@ -227,17 +231,19 @@ class ActiveRecord::Base
 
   def topic_stub(topic = self)
     x = TOXTM2::xmlNode('topic')
-    x['id'] = topic.identifier
+    # Changed 2010-06-29: identifier --> internal_identifier
+    # x['id'] = topic.identifier
+    x['id'] = topic.send(topic.internal_identifier)
 
     item_identifiers.each do |ii|
       loc = topic.send("#{ii}")
       x << TOXTM2.locator(loc)
     end unless item_identifiers.blank?
 
-    if subject_identifiers.blank?
+    if item_identifiers.blank?
       x << TOXTM2.locator(topic.abs_identifier, "subjectIdentifier")
     else
-      subject_identifiers.each do |si|
+      item_identifiers.each do |si|
         si_value = topic.send("#{si}")
         x << TOXTM2.locator(si_value, "subjectIdentifier")
       end
@@ -256,11 +262,12 @@ class ActiveRecord::Base
   def create_association_types(associations)
     acc_types = []
 
-
+    # Changed 2010-06-29: from dclone to clone
     associations.dclone.each do |accs_orig|
       accs = accs_orig.dclone
-      #puts "accs.pretty_inspect: " + accs.pretty_inspect
-
+    # associations.clone.each do |accs_orig|
+    #   accs = accs_orig.clone
+      # puts "accs.pretty_inspect: " + accs.pretty_inspect
       acc_name = accs.delete_at(0)
       acc_opts = accs.delete_at(0)
 
@@ -340,9 +347,12 @@ class ActiveRecord::Base
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_association_instances(associations, x)
 
+    # Changed 2010-06-29: from dclone to clone
     associations.dclone.each do |accs|
+    # associations.clone.each do |accs|
 
       acc_name = accs.dclone.delete_at(0)
+      # acc_name = accs.clone.delete_at(0)
       accs_p = self.send("#{acc_name}")
 
       accs_p = [accs_p] unless accs_p.is_a? Array
@@ -366,3 +376,26 @@ class ActiveRecord::Base
 
 end
 
+class Object
+  def dclone
+    clone
+  end
+end
+class Symbol
+  def dclone ; self ; end
+end
+class Fixnum
+  def dclone ; self ; end
+end
+class Float
+  def dclone ; self ; end
+end
+
+class Array
+  def dclone
+    klone = self.clone
+    klone.clear
+    self.each{|v| klone << v.dclone}
+    klone
+  end
+end

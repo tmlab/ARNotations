@@ -317,7 +317,7 @@ Method to set the psi for a topic.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#has_subject_identifier-class_method" title="has_subject_identifier (class method)">+ (Object) <strong>has_subject_identifier</strong>(*attributes) </a>
+      <a href="#has_item_identifier-class_method" title="has_item_identifier (class method)">+ (Object) <strong>has_item_identifier</strong>(*attributes) </a>
     
 
     
@@ -1208,9 +1208,9 @@ Daniel Exner <exner@informatik.uni-leipzig.de>
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="has_subject_identifier-class_method">
+  <p class="signature " id="has_item_identifier-class_method">
   
-    + (<tt>Object</tt>) <strong>has_subject_identifier</strong>(*attributes) 
+    + (<tt>Object</tt>) <strong>has_item_identifier</strong>(*attributes) 
   
 
   
@@ -1230,7 +1230,7 @@ add another subject identifier to the fragment.
     <h3>Examples:</h3>
     
       <h4><div class='inline'></div></h4>
-      <pre class="example code"><span class='id has_subject_identifier'>has_subject_identifier</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.topicmapslab.de/people/</span><span class='tstring_end'>&quot;</span></span></pre>
+      <pre class="example code"><span class='id has_item_identifier'>has_item_identifier</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.topicmapslab.de/people/</span><span class='tstring_end'>&quot;</span></span></pre>
     
   </div>
 <h3>Parameters:</h3>
@@ -1287,10 +1287,10 @@ Daniel Exner <exner@informatik.uni-leipzig.de>
     <td>
       <pre class="code"><span class="info file"># File 'lib/ar_notations/model_core_ext.rb', line 79</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id has_subject_identifier'>has_subject_identifier</span><span class='lparen'>(</span><span class='op'>*</span><span class='id attributes'>attributes</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id subject_identifiers'>subject_identifiers</span> <span class='op'>||=</span><span class='lbracket'>[</span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id has_item_identifier'>has_item_identifier</span><span class='lparen'>(</span><span class='op'>*</span><span class='id attributes'>attributes</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id item_identifiers'>item_identifiers</span> <span class='op'>||=</span><span class='lbracket'>[</span><span class='rbracket'>]</span>
 
-  <span class='kw'>self</span><span class='period'>.</span><span class='id subject_identifiers'>subject_identifiers</span> <span class='op'>&lt;&lt;</span> <span class='id attributes'>attributes</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id item_identifiers'>item_identifiers</span> <span class='op'>&lt;&lt;</span> <span class='id attributes'>attributes</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1606,10 +1606,10 @@ Daniel Exner <exner@informatik.uni-leipzig.de>
     <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id locator'>locator</span><span class='lparen'>(</span><span class='id loc'>loc</span><span class='rparen'>)</span>
   <span class='kw'>end</span> <span class='kw'>unless</span> <span class='id item_identifiers'>item_identifiers</span><span class='period'>.</span><span class='id blank?'>blank?</span>
 
-  <span class='kw'>if</span> <span class='id subject_identifiers'>subject_identifiers</span><span class='period'>.</span><span class='id blank?'>blank?</span>
+  <span class='kw'>if</span> <span class='id item_identifiers'>item_identifiers</span><span class='period'>.</span><span class='id blank?'>blank?</span>
     <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id locator'>locator</span><span class='lparen'>(</span><span class='id topic'>topic</span><span class='period'>.</span><span class='id abs_identifier'>abs_identifier</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>subjectIdentifier</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='kw'>else</span>
-    <span class='id subject_identifiers'>subject_identifiers</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id si'>si</span><span class='op'>|</span>
+    <span class='id item_identifiers'>item_identifiers</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id si'>si</span><span class='op'>|</span>
       <span class='id si_value'>si_value</span> <span class='op'>=</span> <span class='id topic'>topic</span><span class='period'>.</span><span class='id send'>send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id si'>si</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
       <span class='id x'>x</span> <span class='op'>&lt;&lt;</span> <span class='const'>TOXTM2</span><span class='period'>.</span><span class='id locator'>locator</span><span class='lparen'>(</span><span class='id si_value'>si_value</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>subjectIdentifier</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
     <span class='kw'>end</span>
