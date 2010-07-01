@@ -67,20 +67,22 @@ class ActiveRecord::Base
 
     self.item_identifiers << attributes
   end
-
-  # Method to add subject identifiers for the topic type. Every invocation will
-  # add another subject identifier to the fragment.
-  #
-  # @example
-  # has_item_identifier "http://www.topicmapslab.de/people/"
-  #
-  # @param [Array<Hash<Symbol>>] attributes array of subject identifiers to add to the topic
-  # @author Daniel Exner <exner@informatik.uni-leipzig.de>
-  def self.has_item_identifier(* attributes)
-    self.item_identifiers ||=[]
-
-    self.item_identifiers << attributes
-  end
+  
+  # Changed 2010-06-30: double method
+  
+  # # Method to add subject identifiers for the topic type. Every invocation will
+  # # add another subject identifier to the fragment.
+  # #
+  # # @example
+  # # has_item_identifier "http://www.topicmapslab.de/people/"
+  # #
+  # # @param [Array<Hash<Symbol>>] attributes array of subject identifiers to add to the topic
+  # # @author Daniel Exner <exner@informatik.uni-leipzig.de>
+  # def self.has_item_identifier(* attributes)
+  #   self.item_identifiers ||=[]
+  # 
+  #   self.item_identifiers << attributes
+  # end
 
   # Method to add names for the topic. Every invocation will add
   # another name with the given :psi to the fragment.
@@ -153,7 +155,6 @@ class ActiveRecord::Base
   # @return [TOXTM2::xml_doc] returns an XTM2 fragment
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def to_xtm2
-
     doc = TOXTM2::xml_doc
 
     x = TOXTM2::xmlNode('topicMap')
@@ -172,9 +173,7 @@ class ActiveRecord::Base
     if names.blank?
       types = []
     else
-      # Changed 2010-06-29: from dclone to clone
       types = names.dclone
-      # types = names.clone
     end
 
     types.concat(occurrences.dclone) unless occurrences.blank?
@@ -209,11 +208,16 @@ class ActiveRecord::Base
 
   # returns the XTM 2.0 representation of this topic as an REXML::Element
   def topic_to_xtm2
-
     x = topic_stub
-
+    
+    # Changed 2010-07-01: added support for has_many relations,
+    # now you can write: has_name :person_synonyms, :psi => "http://xmlns.com/foaf/0.1/nick", :attribute => :synonym
     names.each do |n_attr|
-      x << name_to_xtm2(n_attr.at(0), self.send("#{n_attr.at(0)}"), n_attr.at(1))
+      if self.has_attribute?(n_attr.at(0))
+        x << name_to_xtm2(n_attr.at(0), self.send("#{n_attr.at(0)}"), n_attr.at(1))
+      else
+        x = name_to_xtm2(n_attr.at(0), self.send("#{n_attr.at(0)}"), n_attr.at(1),x)
+      end
     end unless names.blank?
 
     occurrences.each do |o_attr|
@@ -262,11 +266,8 @@ class ActiveRecord::Base
   def create_association_types(associations)
     acc_types = []
 
-    # Changed 2010-06-29: from dclone to clone
     associations.dclone.each do |accs_orig|
       accs = accs_orig.dclone
-    # associations.clone.each do |accs_orig|
-    #   accs = accs_orig.clone
       # puts "accs.pretty_inspect: " + accs.pretty_inspect
       acc_name = accs.delete_at(0)
       acc_opts = accs.delete_at(0)
@@ -330,7 +331,7 @@ class ActiveRecord::Base
 
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_types(types, x)
-
+    
     types.each do |type_h|
 
       #puts "type_h.pretty_inspect: " +type_h.pretty_inspect
@@ -347,12 +348,9 @@ class ActiveRecord::Base
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
   def create_association_instances(associations, x)
 
-    # Changed 2010-06-29: from dclone to clone
     associations.dclone.each do |accs|
-    # associations.clone.each do |accs|
 
       acc_name = accs.dclone.delete_at(0)
-      # acc_name = accs.clone.delete_at(0)
       accs_p = self.send("#{acc_name}")
 
       accs_p = [accs_p] unless accs_p.is_a? Array

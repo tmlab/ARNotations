@@ -21,25 +21,31 @@ module ARNotations
 
     end
 
-    def name_to_xtm2(type, value, name_attr={})
-
-      x = TOXTM2::xmlNode 'name'
-
+    def name_to_xtm2(type, value, name_attr={},doc = nil)
       name_attr ||= {}
-
       name_attr[:name] ||= type.to_s
 
-      x << TOXTM2.type(name_attr[:name].gsub(/\W+/, '_'))
-
+      
       if name_attr && name_attr[:scope]
         y = TOXTM2::xmlNode 'scope'
         y << TOXTM2.to_xtm2_ref(name_attr[:scope].gsub(/\W+/, '_'))
         x << y
       end
 
-      if value
+      if value && self.has_attribute?(type)
+        x = TOXTM2::xmlNode 'name'
+        x << TOXTM2.type(name_attr[:name].gsub(/\W+/, '_'))
         x << TOXTM2.value(value)
         return x
+      elsif value && !self.has_attribute?(type)
+        # how to build an array of nodes?
+        value.each do |v|
+          y = TOXTM2::xmlNode 'name'
+          y << TOXTM2.type(name_attr[:name].gsub(/\W+/, '_'))
+          y << TOXTM2.value(eval("v.#{name_attr[:attribute]}"))
+          doc << y
+        end
+        return doc
       else
         return nil
       end
