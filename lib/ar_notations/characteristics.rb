@@ -53,14 +53,12 @@ module ARNotations
     end
 
     def occurrence_to_xtm2(occ, occ_attr= {}, value = self.send("#{occ}"))
-
       x = TOXTM2::xmlNode 'occurrence'
 
       #x << TOXTM2.locator(absolute_identifier.to_s+"#"+occ.to_s)
 
       occ_attr[:psi] ||=occ.to_s
       x << TOXTM2.type(occ_attr[:psi])
-
       x << TOXTM2.res_data(value) unless value.blank?
 
       return x

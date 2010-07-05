@@ -112,8 +112,8 @@ class ActiveRecord::Base
   # another occurrences with the given :psi to the fragment.
   #
   # @example
-  # has_occurrence :description
-  # has_occurrence :homepage
+  # has_occurrence :description, :psi => "http://psi.topicmapslab.de/tml/description"
+  # has_occurrence :homepage, :psi => "http://xmlns.com/foaf/0.1/homepage"
   #
   # @param [Array<Hash<Symbol>>] attributes array of occurrence to add to the topic
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
@@ -220,15 +220,21 @@ class ActiveRecord::Base
       end
     end unless names.blank?
 
+    # occurrences should have the following format:
+    # has_occurrence :attribut, :psi => "example.com"
     occurrences.each do |o_attr|
-      if o_attr.instance_of?(:Hash)
-        o = o_attr.dclone.delete(:attribute)
+      p o_attr.at(1)[:psi]
+      if o_attr.is_a? Array
+        o = o_attr.at(0)
+        psi = {:psi => o_attr.at(1)[:psi]}
+        # o = o_attr.dclone.delete(:attribute)
       else
         o = o_attr
       end
-      x << occurrence_to_xtm2(o, o_attr)
-
+      x << occurrence_to_xtm2(o, psi)
+      # x << occurrence_to_xtm2(o, o_attr)
     end unless occurrences.blank?
+
 
     return x
   end
