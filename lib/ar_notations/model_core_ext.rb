@@ -182,7 +182,7 @@ class ActiveRecord::Base
 
     # Changed 2010-06-29: test if acc_types.nil
     # types.concat(acc_types.uniq)
-    types.concat(acc_types.uniq) if not acc_types.nil?
+    types.concat(acc_types.uniq) unless acc_types.blank?
 
     create_types(types, x)
 
@@ -287,38 +287,25 @@ class ActiveRecord::Base
       else
 
         if accs_p.is_a?(Enumerable)
-          #Role
-          role_options = accs.delete_at(0)
-          acc_types << [acc_name.to_s+"_"+accs_p.first.class.to_s, role_options]
-
-          #Scoped names
-          scopes << role_options[:name]
-
-          #Player
-          acc_types << [accs_p.first.class.to_s, {:psi => accs_p.first.psi, :name => accs_p.first.class.to_s}]
-
-          #Nametypes of players
-          if (accs_p.first.default_name.blank? && !accs_p.first.names.blank?)
-            acc_types << accs_p.first.names.first
-          end
-
-        else
-          #Role
-          role_options = accs.delete_at(0)
-          acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, role_options]
-
-          #Scoped names
-          scopes << role_options[:name]
-
-          #Player
-          acc_types << [accs_p.class.to_s, {:psi => accs_p.psi, :name => accs_p.class.to_s}]
-
-          #Nametypes of players
-          if (accs_p.default_name.blank? && !accs_p.names.blank?)
-            acc_types << accs_p.names.first
-          end
-
+          accs_p = accs_p.first
         end
+
+        #Role
+        role_options = accs.delete_at(0)
+        acc_types << [acc_name.to_s+"_"+accs_p.class.to_s, role_options]
+
+        #Scoped names
+        scopes << role_options[:name]
+
+        #Player
+        acc_types << [accs_p.class.to_s, {:psi => accs_p.psi, :name => accs_p.class.to_s}]
+
+        #Nametypes of players
+        if (accs_p.default_name.blank? && !accs_p.names.blank?)
+          acc_types << accs_p.names.first
+        end
+
+
         #Role self
         self_opts = accs.delete_at(0)
         acc_types << [acc_name.to_s+"_"+self.class.to_s, self_opts]
@@ -333,6 +320,7 @@ class ActiveRecord::Base
       end
 
     end unless associations.blank?
+    return acc_types
   end
 
   # @author Daniel Exner <exner@informatik.uni-leipzig.de>
