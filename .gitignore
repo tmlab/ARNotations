@@ -1,0 +1,5 @@
+spec/debug.log
+.yardoc/*
+.hgrc
+.idea
+pkg
