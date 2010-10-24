@@ -7,13 +7,21 @@
 # License:: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 require 'rake'
-require 'spec/rake/spectask'
+require 'jeweler'
 
-desc 'Default: run specs.'
-task :default => :spec
-
-desc 'Run the specs'
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_opts = ['--colour --format progress --loadby mtime --reverse']
-  t.spec_files = FileList['spec/**/*_spec.rb']
+Jeweler::Tasks.new do |gem|
+  gem.name = "arnoations"
+  gem.summary = "Enrich your app with Topic Map fragments"
+  gem.description = "Allows creation of Rails Applications with Topic Map Fragment support"
+  gem.email = "darkwingdex@googlemail.com"
+  gem.homepage = "http://github.com/DeX77/ARNotations"
+  gem.authors = ["Daniel Exner"]
+  gem.files = Dir["*", "{lib}/**/*"]
+  if (RUBY_PLATFORM.include?('java'))
+    gem.add_dependency("libxml-jruby")
+  else
+    gem.add_dependency("libxml-ruby")
+  end
 end
+
+Jeweler::GemcutterTasks.new
