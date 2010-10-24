@@ -7,17 +7,13 @@ compatible using REST.
 
 Dependencies
 ===========
-Currently ARNotations only depends on the libxml gem.
-Unfortunately this means it does currently *not* work with JRuby.
+Currently ARNotations depends on the libxml gem.
 
 Installation
 ===========
-As stated in the dependencies section, you need to install the libxml gem using:
-e.g. by "gem install libxml"
-After that you can use mercurial to install ARNotions in your Rails application root:
-" hg clone https://arnotations.googlecode.com/hg vendor/plugins/ar_notations"
-For updates just change into "vendor/plugins/ar_notations" and do a quick
-"hg pull -u"
+If you are using ruby, please install "libxml-ruby" or "libxml-jruby" if you use JRuby.
+For Rails 2.x use "script/plugin install git://github.com/DeX77/ARNotations.git" to
+install in your current Rails Application.
 For actually arnotating your Application have a look at the examples provided.
 
 Example
