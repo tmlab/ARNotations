@@ -10,7 +10,7 @@ require 'rake'
 require 'jeweler'
 
 Jeweler::Tasks.new do |gem|
-  gem.name = "arnoations"
+  gem.name = "arnotations"
   gem.summary = "Enrich your app with Topic Map fragments"
   gem.description = "Allows creation of Rails Applications with Topic Map Fragment support"
   gem.email = "darkwingdex@googlemail.com"
