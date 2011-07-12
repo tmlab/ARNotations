@@ -8,7 +8,7 @@
 
 module ARNotations
   module Associations
-    include LibXML
+    include TOXTM2
 
     # returns the XTM 2.0 representation of this association as an REXML::Element
     def associations_to_xtm2(acc_array_orig)

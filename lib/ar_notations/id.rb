@@ -8,7 +8,7 @@
 
 module ARNotations
   module Id
-    include LibXML
+    include TOXTM2
     
     # Changed 2010-06-29: identifier --> internal_identifier
     def abs_identifier

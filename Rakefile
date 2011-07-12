@@ -17,11 +17,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/DeX77/ARNotations"
   gem.authors = ["Daniel Exner"]
   gem.files = Dir["*", "{lib}/**/*"]
-  if (RUBY_PLATFORM.include?('java'))
-    gem.add_dependency("libxml-jruby")
-  else
-    gem.add_dependency("libxml-ruby")
-  end
+  gem.add_dependency('nokogiri')
 end
 
 Jeweler::GemcutterTasks.new

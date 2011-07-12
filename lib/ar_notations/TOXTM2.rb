@@ -7,17 +7,18 @@
 # License:: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 #require 'rexml/document'
-require 'libxml'
+require 'nokogiri'
 
 
 module TOXTM2  
 
   def self.xmlNode(* attributes)
-    return LibXML::XML::Node.new(attributes)
+    puts "attributes: #{attributes}"
+    return Nokogiri::XML::Node.new(attributes)
   end
   
   def self.xml_doc
-    return LibXML::XML::Document.new
+    return Nokogiri::XML::Document.new
   end
 
   def self.type(type)

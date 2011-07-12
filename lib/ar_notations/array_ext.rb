@@ -6,8 +6,6 @@
 # Copyright:: Copyright (c) 2010 Daniel Exner
 # License:: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
-require 'libxml'
-
 class Array
   include TOXTM2
   include ARNotations::Characteristics

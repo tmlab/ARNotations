@@ -8,7 +8,7 @@
 
 module ARNotations
   module Characteristics
-    include LibXML
+    include TOXTM2
 
     def default_name_to_xtm2(value, name_attr={})
 
