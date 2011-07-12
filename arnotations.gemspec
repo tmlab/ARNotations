@@ -4,54 +4,53 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{arnoations}
+  s.name = %q{arnotations}
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Daniel Exner"]
-  s.date = %q{2010-10-24}
+  s.date = %q{2010-10-26}
   s.description = %q{Allows creation of Rails Applications with Topic Map Fragment support}
   s.email = %q{darkwingdex@googlemail.com}
   s.extra_rdoc_files = [
-    "README",
-     "TODO"
+    "README.md",
+    "TODO"
   ]
   s.files = [
     "MIT-LICENSE",
-     "README",
-     "Rakefile",
-     "TODO",
-     "VERSION",
-     "init.rb",
-     "install.rb",
-     "lib/ar_notations.rb",
-     "lib/ar_notations/TOXTM2.rb",
-     "lib/ar_notations/array_ext.rb",
-     "lib/ar_notations/associations.rb",
-     "lib/ar_notations/characteristics.rb",
-     "lib/ar_notations/fragment_metadata.rb",
-     "lib/ar_notations/id.rb",
-     "lib/ar_notations/model_core_ext.rb",
-     "lib/ar_notations/rails3_core_ext.rb",
-     "lib/ar_notations/xtm2.dtd",
-     "lib/ar_notations/xtm2.rng",
-     "lib/ar_notations/xtm2.xsd",
-     "lib/ar_notations/xtm_validation.rb",
-     "uninstall.rb"
+    "README.md",
+    "Rakefile",
+    "TODO",
+    "VERSION",
+    "init.rb",
+    "install.rb",
+    "lib/ar_notations.rb",
+    "lib/ar_notations/TOXTM2.rb",
+    "lib/ar_notations/array_ext.rb",
+    "lib/ar_notations/associations.rb",
+    "lib/ar_notations/characteristics.rb",
+    "lib/ar_notations/fragment_metadata.rb",
+    "lib/ar_notations/id.rb",
+    "lib/ar_notations/model_core_ext.rb",
+    "lib/ar_notations/rails3_core_ext.rb",
+    "lib/ar_notations/xtm2.dtd",
+    "lib/ar_notations/xtm2.rng",
+    "lib/ar_notations/xtm2.xsd",
+    "lib/ar_notations/xtm_validation.rb",
+    "uninstall.rb"
   ]
   s.homepage = %q{http://github.com/DeX77/ARNotations}
-  s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Enrich your app with Topic Map fragments}
   s.test_files = [
-    "spec/ar_notations_spec_helper.rb",
-     "spec/ar_notations_spec.rb",
-     "spec/ar_notations/controller_core_ext_spec.rb",
-     "spec/ar_notations/model_core_ext_spec.rb",
-     "spec/ar_notations/associations_spec.rb",
-     "spec/ar_notations/id_specs.rb",
-     "spec/ar_notations/characteristics_spec.rb"
+    "spec/ar_notations/associations_spec.rb",
+    "spec/ar_notations/characteristics_spec.rb",
+    "spec/ar_notations/controller_core_ext_spec.rb",
+    "spec/ar_notations/id_specs.rb",
+    "spec/ar_notations/model_core_ext_spec.rb",
+    "spec/ar_notations_spec.rb",
+    "spec/ar_notations_spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
