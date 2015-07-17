@@ -1,7 +1,7 @@
-source :gemcutter
+source 'https://rubygems.org'
 
 gem "rails", "~> 2.3.11"
-gem "libxml"
+gem 'libxml-ruby', '~> 2.8.0'
 
 group :development do
   # bundler requires these gems in development
